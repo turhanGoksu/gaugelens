@@ -318,13 +318,20 @@ def render_dial(spec: DialSpec, value: float, size: int = 512) -> RenderedDial:
                 spec.ink_color,
             )
 
-    number_font = _font(max(1, round(spec.number_size * face * ss)))
     number_radius = tick_outer - major_len - spec.number_gap * face
+    numbers = []
     for i in range(intervals + 1):
         tick_value = scale.min_value + i * spec.major_step
         text = f"{tick_value:.{spec.decimals}f}"
-        if float(text) == 0.0:
-            text = text.lstrip("-")
+        numbers.append((tick_value, text.lstrip("-") if float(text) == 0.0 else text))
+    # Shrink the numbers when the widest one would not fit between neighbors.
+    font_size = max(1, round(spec.number_size * face * ss))
+    spacing = number_radius * ss * math.radians(scale.sweep) / intervals
+    widest = max(_font(font_size).getlength(text) for _, text in numbers)
+    if widest > 0.8 * spacing:
+        font_size = max(1, int(font_size * 0.8 * spacing / widest))
+    number_font = _font(font_size)
+    for tick_value, text in numbers:
         anchor = to_canvas(polar(scale.value_to_angle(tick_value), number_radius))
         draw.text(anchor, text, font=number_font, fill=spec.ink_color, anchor="mm")
 
