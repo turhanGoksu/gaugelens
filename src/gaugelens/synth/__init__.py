@@ -11,6 +11,15 @@ except ImportError as error:
         "gaugelens.synth needs Pillow: pip install 'gaugelens[synth]'"
     ) from error
 
+from gaugelens.synth.backgrounds import BackgroundPool, download_polyhaven
+from gaugelens.synth.capture import (
+    CaptureParams,
+    Scene,
+    SceneLabels,
+    capture,
+    render_scene,
+    sample_capture,
+)
 from gaugelens.synth.dial import (
     DialLabels,
     DialSpec,
@@ -22,11 +31,19 @@ from gaugelens.synth.dial import (
 )
 
 __all__ = [
+    "BackgroundPool",
+    "CaptureParams",
     "DialLabels",
     "DialSpec",
     "RenderedDial",
+    "Scene",
+    "SceneLabels",
+    "capture",
+    "download_polyhaven",
     "render_dial",
     "render_random",
+    "render_scene",
+    "sample_capture",
     "sample_spec",
     "sample_value",
 ]

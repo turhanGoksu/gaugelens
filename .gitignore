@@ -14,6 +14,7 @@ models/
 data/raw/
 data/synthetic/
 data/external/
+data/backgrounds/
 
 # Evaluation and training outputs
 runs/

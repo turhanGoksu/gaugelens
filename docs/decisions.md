@@ -69,3 +69,20 @@ Each decision records what was decided, why, and when. Decisions are revisited o
 **Later:** a 3D renderer (Blender) is added only if the data calls for it. That means the measured synthetic→real gap stays large after 2D realism improvements made one change at a time.
 - It would be a separate tool outside the library. Blender renders are free to use, but published bpy scripts must be GPL-compliant.
 - SyncG (Blender-rendered) can serve as a 3D comparison if its license allows.
+
+## D6 — Backgrounds for synthetic scenes (2026-10-08)
+
+**Decision:** backgrounds mix procedural patterns with CC0 photos from Poly Haven. By default 70% of scenes use a photo and 30% a procedural pattern.
+- 30 panoramas of industrial indoor scenes (tonemapped JPG). Crops come from their middle band, where the panorama projection distorts least.
+- 59 surface textures: metal, concrete, plaster, and brick.
+
+**Why:**
+- The photos give realistic industrial context under the cleanest license (CC0).
+- The procedural share keeps a model from memorizing a few photos.
+
+**Poly Haven API terms (checked 2026-10-08):**
+- Free for any purpose.
+- Users must be told the assets came from Poly Haven.
+- Requests need a unique User-Agent.
+
+Downloads go to `data/backgrounds/`, which is not committed. A `manifest.json` there records each file's source, authors, and license.

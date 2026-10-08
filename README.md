@@ -37,6 +37,12 @@ size, and cost.
 - [Prior art and license survey](docs/prior-art-and-licenses.md)
 - [Design decisions](docs/decisions.md)
 
+## Credits
+
+Synthetic scenes use CC0 background photos from [Poly Haven](https://polyhaven.com),
+downloaded on demand; `data/backgrounds/manifest.json` lists each asset and
+its authors.
+
 ## License
 
 Apache-2.0. Every default dependency is Apache-2.0-compatible. Models with

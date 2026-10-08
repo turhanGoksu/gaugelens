@@ -20,5 +20,13 @@ A released version is never changed: fixes ship as a new version.
   labels (value, center, needle tip, min/max marks, bbox). Randomizes range,
   unit, sweep, ticks, colors, needle and bezel; RGBA output for a later
   capture stage.
+- Capture stage (`gaugelens.synth.capture`): places a dial in a scene
+  through one homography (camera tilt, roll, distance), then adds glare,
+  shadow, lighting changes, blur, noise, and JPEG compression. Keypoints go
+  through the same homography, and the shooting conditions are recorded in
+  the labels.
+- Backgrounds (`gaugelens.synth.backgrounds`): procedural patterns plus CC0
+  photos from Poly Haven, downloaded with `download_polyhaven()` into a
+  folder with a source/license manifest.
 - Prior-art and license survey (`docs/prior-art-and-licenses.md`) and the
   design decision log (`docs/decisions.md`).

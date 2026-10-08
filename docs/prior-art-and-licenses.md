@@ -41,6 +41,7 @@ _Last checked: 2026-10-04. Licenses change — re-verify every entry before each
 | [Synthetic Data for Precision Gauge Reading](https://www.kaggle.com/datasets/endava/synthetic-data-for-precision-gauge-reading) (Endava) | 501 synthetic images | CC BY-NC-SA 4.0 | **Excluded** (non-commercial). |
 | Roboflow Universe gauge datasets | Mostly boxes/keypoints, no values | Per dataset | Check each one individually. |
 | SyncG | 20k synthetic | To verify | — |
+| [Poly Haven](https://polyhaven.com) HDRIs and textures | Background photos for synthetic scenes | CC0; the API asks for credit to Poly Haven | Synthetic backgrounds (see D6) |
 
 ## 5. Model candidates
 
