@@ -13,5 +13,8 @@ A released version is never changed: fixes ship as a new version.
 
 - Project skeleton: `src/` layout, Apache-2.0 license, CI (lint, tests on
   Python 3.11 and 3.14, wheel build and install check).
+- `gaugelens.geometry`: needle angle <-> value on a linear circular scale
+  (clock-convention angles, scales that cross 12 o'clock, dead-zone split into
+  `below_range` / `above_range`, provisional 1% FS edge margin).
 - Prior-art and license survey (`docs/prior-art-and-licenses.md`) and the
   design decision log (`docs/decisions.md`).

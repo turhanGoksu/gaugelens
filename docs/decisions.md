@@ -35,3 +35,24 @@ Each decision records what was decided, why, and when. Decisions are revisited o
 **Extras:** `[synth]`, `[foundation]`, `[vlm]`, and `[demo]` are each added in the commit that introduces their code. Training dependencies are never an extra; they live in `training/requirements.txt`.
 
 **Revisit if:** a core dependency becomes a problem, for example missing wheels on a platform or install size.
+
+## D4 — Angle convention and needles outside the scale (2026-10-08)
+
+**Angle convention:** clock convention.
+- 0° points to 12 o'clock and angles grow clockwise.
+- Pixel y points down.
+- Values increase clockwise from the min mark to the max mark. Counterclockwise scales are out of scope for v0.1.
+
+**Outside the scale:** the dead zone between the max mark and the min mark is split in half.
+- The half next to the max mark counts as above the range; the half next to the min mark counts as below it.
+- An exact tie counts as above, because missing an overpressure is the worse error.
+- A needle more than an edge margin beyond an end mark gets `value=None` and status `below_range` or `above_range`.
+- Within the margin, the value is clamped to the end mark. This covers measurement noise, for example a needle resting on zero.
+
+**Why:**
+- Clamping would report 10 bar on a 0–10 bar gauge whatever the real overpressure is. That is a confidently wrong reading in exactly the case that matters most for safety.
+- Extrapolating reports a number the gauge is not calibrated for.
+
+**Status set:** `ok`, `low_confidence`, `unreadable`, `no_gauge`, `below_range`, `above_range`.
+
+**Edge margin:** the provisional default is 1% FS. The final value is chosen on the dev set together with the tolerances.

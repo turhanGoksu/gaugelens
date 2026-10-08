@@ -2,7 +2,8 @@
 
 Read analog dial gauges (pressure, temperature, …) from photos. Every reading
 comes with an explicit status (`ok`, `low_confidence`, `unreadable`,
-`no_gauge`); the library never returns a number without one.
+`no_gauge`, `below_range`, `above_range`); the library never returns a number
+without one.
 
 > **Status: pre-alpha, under construction.** Nothing is released yet and
 > there are no benchmark numbers yet. This README will report them once the
