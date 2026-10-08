@@ -56,3 +56,16 @@ Each decision records what was decided, why, and when. Decisions are revisited o
 **Status set:** `ok`, `low_confidence`, `unreadable`, `no_gauge`, `below_range`, `above_range`.
 
 **Edge margin:** the provisional default is 1% FS. The final value is chosen on the dev set together with the tolerances.
+
+## D5 — Synthetic renderer (2026-10-08)
+
+**Decision:** the v0.1 generator is a 2D procedural renderer (Pillow). It ships in the library as `gaugelens.synth` behind the `[synth]` extra.
+
+**Why:**
+- It is fast on CPU and runs on Kaggle and in CI.
+- Its code is Apache-2.0 and unit-testable.
+- Labels are exact by construction.
+
+**Later:** a 3D renderer (Blender) is added only if the data calls for it. That means the measured synthetic→real gap stays large after 2D realism improvements made one change at a time.
+- It would be a separate tool outside the library. Blender renders are free to use, but published bpy scripts must be GPL-compliant.
+- SyncG (Blender-rendered) can serve as a 3D comparison if its license allows.

@@ -16,5 +16,9 @@ A released version is never changed: fixes ship as a new version.
 - `gaugelens.geometry`: needle angle <-> value on a linear circular scale
   (clock-convention angles, scales that cross 12 o'clock, dead-zone split into
   `below_range` / `above_range`, provisional 1% FS edge margin).
+- `gaugelens.synth` (`[synth]` extra): 2D procedural dial renderer with exact
+  labels (value, center, needle tip, min/max marks, bbox). Randomizes range,
+  unit, sweep, ticks, colors, needle and bezel; RGBA output for a later
+  capture stage.
 - Prior-art and license survey (`docs/prior-art-and-licenses.md`) and the
   design decision log (`docs/decisions.md`).

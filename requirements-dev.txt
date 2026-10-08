@@ -1,6 +1,6 @@
 # Development and CI dependencies.
-# The gaugelens package itself, editable, with its core version ranges.
--e .
+# The gaugelens package itself, editable, with its version ranges.
+-e .[synth]
 
 ruff==0.16.10
 pytest==9.1.1
