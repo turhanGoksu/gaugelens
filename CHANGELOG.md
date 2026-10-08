@@ -28,5 +28,10 @@ A released version is never changed: fixes ship as a new version.
 - Backgrounds (`gaugelens.synth.backgrounds`): procedural patterns plus CC0
   photos from Poly Haven, downloaded with `download_polyhaven()` into a
   folder with a source/license manifest.
+- Dataset writer and CLI (`python -m gaugelens.synth`): `download-backgrounds`
+  and `generate`. A dataset folder holds `images/`, `labels.jsonl` and
+  `dataset.json`; scenes depend only on their seed, so parallel workers write
+  identical files. Train and dev use disjoint seeds and disjoint background
+  photos.
 - Prior-art and license survey (`docs/prior-art-and-licenses.md`) and the
   design decision log (`docs/decisions.md`).

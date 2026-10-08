@@ -9,12 +9,14 @@ assets came from Poly Haven, hence the manifest and the credit in the README.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import urllib.request
 from collections.abc import Callable, Sequence
 from functools import lru_cache
 from pathlib import Path
+from typing import Literal
 
 import cv2
 import numpy as np
@@ -45,6 +47,21 @@ _PANORAMA_WIDTH = 3072
 _PANORAMA_BAND = (0.3, 0.7)
 
 Fetch = Callable[[str], bytes]
+Split = Literal["train", "dev"]
+
+DEV_FRACTION = 0.2
+
+
+def background_split(file_name: str, dev_fraction: float = DEV_FRACTION) -> Split:
+    """Which split may use a background photo.
+
+    Decided by a hash of the file name, so a photo keeps its split when new
+    photos are added. Dev scenes then show only backgrounds the model never
+    saw in training (docs/decisions.md, D7).
+    """
+    digest = hashlib.sha256(file_name.encode()).digest()
+    bucket = int.from_bytes(digest[:8], "big") / 2**64
+    return "dev" if bucket < dev_fraction else "train"
 
 
 def _fetch(url: str) -> bytes:
@@ -154,9 +171,13 @@ class BackgroundPool:
 
     @classmethod
     def from_dir(
-        cls, directory: str | Path, photo_probability: float = 0.7
+        cls,
+        directory: str | Path,
+        photo_probability: float = 0.7,
+        split: Split | None = None,
     ) -> BackgroundPool:
-        """Photos listed in ``manifest.json``, or every JPEG/PNG without one."""
+        """Photos listed in ``manifest.json``, or every JPEG/PNG without one.
+        With ``split``, only the photos assigned to that split."""
         directory = Path(directory)
         manifest = directory / "manifest.json"
         if manifest.exists():
@@ -167,6 +188,10 @@ class BackgroundPool:
         else:
             paths = sorted(directory.glob("*.jp*g")) + sorted(directory.glob("*.png"))
             photos = [(p, False) for p in paths]
+        if split is not None:
+            photos = [
+                (p, pano) for p, pano in photos if background_split(p.name) == split
+            ]
         return cls(photos, photo_probability)
 
     def sample(

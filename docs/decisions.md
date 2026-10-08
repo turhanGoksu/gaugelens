@@ -86,3 +86,16 @@ Each decision records what was decided, why, and when. Decisions are revisited o
 - Requests need a unique User-Agent.
 
 Downloads go to `data/backgrounds/`, which is not committed. A `manifest.json` there records each file's source, authors, and license.
+
+## D7 — Synthetic train/dev splits (2026-10-08)
+
+**Decision:** synthetic train and dev sets share nothing a model could memorize.
+- Seeds come from ranges that can never overlap: train starts at 0, dev at 100,000,000.
+- Background photos are split by a hash of the file name: about 20% are dev-only and the rest train-only. A photo keeps its split when new photos are added.
+- Procedural backgrounds are fresh for every seed, so both splits use them.
+
+**Why:** if dev scenes reused the training backgrounds, a model could separate gauge from background by memory. The dev score would then be optimistic, while real photos always show backgrounds the model never saw.
+
+**What each set answers:**
+- Synthetic dev: "did the model learn the synthetic task?"
+- Real dev images: "does it transfer to real photos?"

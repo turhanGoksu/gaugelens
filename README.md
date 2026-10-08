@@ -32,6 +32,19 @@ size, and cost.
 - Known-range mode: you pass `min`, `max`, and `unit` from the gauge's spec.
   See [docs/decisions.md](docs/decisions.md) for why.
 
+## Synthetic data
+
+The generator renders gauges with exact labels (`pip install "gaugelens[synth]"`):
+
+```bash
+python -m gaugelens.synth download-backgrounds data/backgrounds
+python -m gaugelens.synth generate data/synthetic/dev --split dev --count 1000 \
+    --backgrounds data/backgrounds --workers 8
+```
+
+Train and dev sets use disjoint seeds and disjoint background photos
+([docs/decisions.md](docs/decisions.md), D7).
+
 ## Documentation
 
 - [Prior art and license survey](docs/prior-art-and-licenses.md)
