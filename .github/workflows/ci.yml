@@ -1,0 +1,74 @@
+# Every push to main and every pull request: lint, unit tests and a package
+# build, each on a fresh runner. No job downloads model weights: tests check
+# only our own code.
+#
+# Runners are pinned (ubuntu-24.04, not ubuntu-latest): "latest" moves on
+# GitHub's schedule, and a red run should come from our own change. Move to a
+# newer image in a commit of its own.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Install ruff (version pinned in requirements-dev.txt)
+        run: pip install "$(grep '^ruff==' requirements-dev.txt)"
+      - run: ruff check .
+      - run: ruff format --check .
+
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        # Lowest supported (Kaggle may run it) and newest.
+        python-version: ["3.11", "3.14"]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: |
+            requirements*.txt
+            pyproject.toml
+      - run: pip install -r requirements-dev.txt
+      - run: pytest
+
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Install build (version pinned in requirements-dev.txt)
+        run: pip install "$(grep '^build==' requirements-dev.txt)"
+      - run: python -m build
+      # A clean virtualenv outside the repository, with the library's own
+      # version ranges: what `pip install gaugelens` users get.
+      - name: Install the wheel and import it
+        working-directory: ${{ runner.temp }}
+        run: |
+          python -m venv wheel-env
+          wheel-env/bin/pip install "$GITHUB_WORKSPACE"/dist/*.whl
+          wheel-env/bin/python -c 'import gaugelens; print("gaugelens", gaugelens.__version__)'

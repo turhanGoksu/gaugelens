@@ -1,0 +1,56 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gaugelens"
+version = "0.0.0"
+description = "Read analog dial gauges from photos, with an explicit status for every reading."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "turhanGoksu" }]
+keywords = ["gauge reading", "analog gauge", "computer vision", "onnx", "industrial inspection"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+]
+# Core = geometry, classical baseline (A0) and Design A inference with ONNX
+# Runtime. PyTorch is not here: it is needed only for training and for the
+# foundation-model / VLM extras (docs/decisions.md, D3).
+dependencies = [
+    "numpy>=1.26",
+    "opencv-python-headless>=4.10,<6",
+    "onnxruntime>=1.20,<2",
+    "huggingface-hub>=0.34,<3",
+]
+
+[project.urls]
+Repository = "https://github.com/turhanGoksu/gaugelens"
+Issues = "https://github.com/turhanGoksu/gaugelens/issues"
+Changelog = "https://github.com/turhanGoksu/gaugelens/blob/main/CHANGELOG.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gaugelens"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/gaugelens", "LICENSE", "README.md", "CHANGELOG.md", "pyproject.toml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["gaugelens"]
