@@ -33,5 +33,13 @@ A released version is never changed: fixes ship as a new version.
   `dataset.json`; scenes depend only on their seed, so parallel workers write
   identical files. Train and dev use disjoint seeds and disjoint background
   photos.
+- Design A0, the classical baseline (`gaugelens.classical.read_classical`):
+  - Hough circle: the precise ALT variant, with the classic one as fallback.
+  - Polar unwrap; the needle is found in the middle band.
+  - Scale ends from the major ticks and the widest empty gap.
+  - Every outcome has a status.
+- Dev evaluation runner (`python -m evaluation.run_dev`): error in % of full
+  scale, share within 1/2/5% FS, confidently wrong readings, abstentions,
+  out-of-range handling, and a breakdown by camera tilt.
 - Prior-art and license survey (`docs/prior-art-and-licenses.md`) and the
   design decision log (`docs/decisions.md`).

@@ -99,3 +99,16 @@ Downloads go to `data/backgrounds/`, which is not committed. A `manifest.json` t
 **What each set answers:**
 - Synthetic dev: "did the model learn the synthetic task?"
 - Real dev images: "does it transfer to real photos?"
+
+## D8 — Same inputs for every design; A0 finds the scale ends itself (2026-10-09)
+
+**Decision:** every design gets the same inputs: `min`, `max`, and `unit`. Each design finds the angles of the min and max marks on its own. A caller may still pass the angles, as an optional override for any design.
+
+A0 finds the ends from the ticks:
+- Major ticks are ink runs that start at the tick ring and reach inward.
+- The dead zone is the widest empty gap between neighboring ticks.
+- If a second gap scores almost as high, the reading is `low_confidence`.
+
+**Why:**
+- If A0 got the angles while Design A had to find them, the comparison would not be fair.
+- Assuming a standard 270° sweep would be a silent guess.

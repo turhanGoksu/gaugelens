@@ -49,6 +49,7 @@ packages = ["src/gaugelens"]
 include = ["src/gaugelens", "LICENSE", "README.md", "CHANGELOG.md", "pyproject.toml"]
 
 [tool.pytest.ini_options]
+pythonpath = ["."]
 testpaths = ["tests"]
 
 [tool.ruff]
@@ -58,4 +59,4 @@ target-version = "py311"
 select = ["E", "F", "W", "I", "B", "UP"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["gaugelens"]
+known-first-party = ["gaugelens", "evaluation"]
