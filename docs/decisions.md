@@ -112,3 +112,18 @@ A0 finds the ends from the ticks:
 **Why:**
 - If A0 got the angles while Design A had to find them, the comparison would not be fair.
 - Assuming a standard 270° sweep would be a silent guess.
+
+## D9 — A0 is frozen after one improvement (2026-10-09)
+
+**Decision:** A0 gets one improvement, an affine tilt correction, and is then frozen. The correction fits an ellipse to the face and stretches it into a circle. The face is filled between Canny edges, which act as walls.
+
+**Synthetic dev results (in-range needles, n = 914):**
+
+| | within 2% FS | within 5% FS | `ok` but >5% off | abstained | off-scale status right |
+|---|---|---|---|---|---|
+| before | 21.2% | 27.7% | 8.6% | 47.9% | 37.2% |
+| after | 34.0% | 53.7% | 10.0% | 24.3% | 62.8% |
+
+**Known limitation:** under perspective, the dial's true center is not the center of its ellipse. With the camera at three dial-sizes' distance and a 20° tilt, the gap is already about 5% of the radius, even though the ellipse itself is fitted to within 0.1%. That gap is now A0's main error.
+
+The full fix is projective rectification: given the ellipse and the true center, the vanishing line is the polar of the center with respect to the ellipse. It needs the center as an input. Design A predicts the center as a keypoint, so this rectification is built as shared geometry when Design A is built.

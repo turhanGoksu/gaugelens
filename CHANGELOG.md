@@ -35,6 +35,8 @@ A released version is never changed: fixes ship as a new version.
   photos.
 - Design A0, the classical baseline (`gaugelens.classical.read_classical`):
   - Hough circle: the precise ALT variant, with the classic one as fallback.
+  - Tilt correction: the face is filled between Canny edges, an ellipse is
+    fitted to it, and the ellipse is stretched back into a circle.
   - Polar unwrap; the needle is found in the middle band.
   - Scale ends from the major ticks and the widest empty gap.
   - Every outcome has a status.

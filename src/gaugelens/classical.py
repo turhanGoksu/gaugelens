@@ -1,6 +1,8 @@
 """Design A0: a classical computer-vision baseline with no learning.
 
-1. Find the dial with the Hough circle transform.
+1. Find the dial with the Hough circle transform, then undo camera tilt: a
+   tilted dial is an ellipse, so fill the face, fit an ellipse to its outline
+   and stretch the ellipse back into a circle.
 2. Unwrap the dial into a polar strip: rows are angles, columns are radii.
    The needle becomes the angle whose middle band is ink along its whole
    length; printed text covers that band only in part.
@@ -9,8 +11,9 @@
    the ticks on its two sides are the max and min marks.
 4. Turn the needle angle into a value with :mod:`gaugelens.geometry`.
 
-The reader measures angles in the photo as they appear. It does not undo
-camera tilt, so its error grows with the tilt.
+Stretching an ellipse into a circle is an affine correction. It removes most
+of the tilt but not the perspective: under a strong perspective the dial's
+center is not the ellipse's center, and a small error remains.
 """
 
 from __future__ import annotations
@@ -28,6 +31,7 @@ Point = tuple[float, float]
 ANGLE_BINS = 1440  # 0.25 degree per polar row
 RADIUS_BINS = 240
 _POLAR_REACH = 1.05  # unwrap slightly past the detected circle
+_CANNY_THRESHOLDS = (15, 45)  # low, so a blurred rim still forms a closed wall
 
 
 @dataclass(frozen=True)
@@ -38,7 +42,7 @@ class ClassicalReading:
     value: float | None
     center: Point | None = None
     radius: float | None = None
-    """Radius of the detected circle in pixels."""
+    """Radius of the dial face in pixels, after the tilt is undone."""
     needle_angle: float | None = None
     min_angle: float | None = None
     max_angle: float | None = None
@@ -181,6 +185,71 @@ def _find_scale_ends(
     return _row_to_clock(min_row), _row_to_clock(max_row), notes
 
 
+def _face_ellipse(
+    image: np.ndarray, center: Point, radius: float
+) -> tuple[Point, tuple[float, float], float] | None:
+    """Fit an ellipse to the dial face, or None if the face cannot be isolated.
+
+    Edges (Canny) act as walls: the face is filled from seeds around the
+    center, the fill cannot cross an edge, and the outline of the filled
+    region is the rim. Comparing colors instead lets the fill creep through
+    blurred rims step by step; walls do not.
+    """
+    gray = cv2.GaussianBlur(cv2.cvtColor(image, cv2.COLOR_RGB2GRAY), (0, 0), 1.2)
+    walls = cv2.dilate(cv2.Canny(gray, *_CANNY_THRESHOLDS), np.ones((3, 3), np.uint8))
+    height, width = gray.shape
+    mask = np.zeros((height + 2, width + 2), np.uint8)
+    mask[1:-1, 1:-1] = walls > 0  # nonzero mask pixels stop the fill
+    flags = 4 | cv2.FLOODFILL_MASK_ONLY | cv2.FLOODFILL_FIXED_RANGE | (2 << 8)
+    for k in range(8):  # seeds between the hub and the numbers
+        a = 2 * np.pi * k / 8
+        x = int(center[0] + 0.4 * radius * np.cos(a))
+        y = int(center[1] + 0.4 * radius * np.sin(a))
+        if 0 <= x < width and 0 <= y < height and not mask[y + 1, x + 1]:
+            cv2.floodFill(gray, mask, (x, y), 0, (255,), (255,), flags)
+    face = (mask[1:-1, 1:-1] == 2).astype(np.uint8)
+    area = float(np.count_nonzero(face))
+    # Too small: the fill was blocked. Too large: it leaked past the bezel.
+    if not 0.3 * np.pi * radius**2 <= area <= 1.6 * np.pi * radius**2:
+        return None
+    contours, _ = cv2.findContours(face, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    hull = cv2.convexHull(max(contours, key=cv2.contourArea))
+    if len(hull) < 5:
+        return None
+    (ex, ey), (axis_w, axis_h), angle = cv2.fitEllipse(hull)
+    return (float(ex), float(ey)), (axis_w / 2, axis_h / 2), float(angle)
+
+
+def _rectify(
+    image: np.ndarray, ellipse: tuple[Point, tuple[float, float], float]
+) -> tuple[np.ndarray, np.ndarray, float]:
+    """Stretch the ellipse along its minor axis into a circle.
+
+    Returns the new image, the 2x3 affine map from the old image to the new
+    one, and the circle's radius.
+    """
+    (ex, ey), (semi_w, semi_h), angle = ellipse
+    t = np.radians(angle)
+    along_w = np.array([np.cos(t), np.sin(t)])  # OpenCV's width axis
+    along_h = np.array([-np.sin(t), np.cos(t)])
+    if semi_w >= semi_h:
+        minor, stretch, radius = along_h, semi_w / semi_h, semi_w
+    else:
+        minor, stretch, radius = along_w, semi_h / semi_w, semi_h
+    linear = np.eye(2) + (stretch - 1.0) * np.outer(minor, minor)
+    side = int(np.ceil(2.3 * radius))
+    target = np.array([side / 2, side / 2])
+    affine = np.hstack([linear, (target - linear @ np.array([ex, ey]))[:, None]])
+    rectified = cv2.warpAffine(
+        image,
+        affine,
+        (side, side),
+        flags=cv2.INTER_LINEAR,
+        borderMode=cv2.BORDER_REPLICATE,
+    )
+    return rectified, affine, float(radius)
+
+
 def read_classical(
     image: np.ndarray,
     min_value: float,
@@ -208,6 +277,13 @@ def read_classical(
         return ClassicalReading("no_gauge", None, notes=("no circle found",))
     cx, cy, r = dial
     center = (cx, cy)
+    ellipse = _face_ellipse(image, center, r)
+    if ellipse is not None:
+        image, _, r = _rectify(image, ellipse)
+        center = (image.shape[1] / 2, image.shape[0] / 2)
+        reported_center = ellipse[0]
+    else:
+        reported_center = center
 
     polar = cv2.warpPolar(
         image,
@@ -239,13 +315,13 @@ def read_classical(
     needle = _find_needle(ink, face_cols)
     if needle is None:
         return ClassicalReading(
-            "unreadable", None, center, r, notes=("no needle found",)
+            "unreadable", None, reported_center, r, notes=("no needle found",)
         )
     needle_row, half_width, notes = needle
     needle_angle = _row_to_clock(needle_row)
     if "two needle-like lines" in notes:
         return ClassicalReading(
-            "unreadable", None, center, r, needle_angle, notes=tuple(notes)
+            "unreadable", None, reported_center, r, needle_angle, notes=tuple(notes)
         )
 
     if min_angle is None or max_angle is None:
@@ -257,7 +333,7 @@ def read_classical(
             return ClassicalReading(
                 "unreadable",
                 None,
-                center,
+                reported_center,
                 r,
                 needle_angle,
                 notes=("scale ticks not found",),
@@ -270,7 +346,7 @@ def read_classical(
         return ClassicalReading(
             "unreadable",
             None,
-            center,
+            reported_center,
             r,
             needle_angle,
             min_angle,
@@ -285,7 +361,7 @@ def read_classical(
     return ClassicalReading(
         status,
         reading.value,
-        center,
+        reported_center,
         r,
         needle_angle,
         min_angle,
