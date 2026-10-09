@@ -127,3 +127,25 @@ A0 finds the ends from the ticks:
 **Known limitation:** under perspective, the dial's true center is not the center of its ellipse. With the camera at three dial-sizes' distance and a 20° tilt, the gap is already about 5% of the radius, even though the ellipse itself is fitted to within 0.1%. That gap is now A0's main error.
 
 The full fix is projective rectification: given the ellipse and the true center, the vanishing line is the polar of the center with respect to the ellipse. It needs the center as an input. Design A predicts the center as a keypoint, so this rectification is built as shared geometry when Design A is built.
+
+## D10 — Real images: sources and roles (2026-10-09)
+
+**Decision:** no own photos. Every real image comes from a public source with a clear license, and each source has exactly one role.
+
+| Role | Source | License |
+|---|---|---|
+| Test | Wikimedia Commons, categories Pressure gauges, Manometers, Vacuum gauges, Gauges | CC0, public domain, CC BY, CC BY-SA (per file) |
+| Real dev | Aalborg pressure gauge data (Kaggle); MeasureBench dial images | CC BY-SA 4.0 |
+| Training (Design A) | Roboflow Universe datasets with keypoint labels | CC BY 4.0, verified per dataset before use |
+
+**Contamination:** VLMs were trained on web images and may have seen these photos.
+- The test uses photos whose readings were never published, so no model can recall an answer.
+- Commons files that MeasureBench uses are excluded, because their readings are public.
+- The README reports this as a limitation.
+
+**Duplicates:** images are compared across sources by perceptual hash. If a duplicate appears in the test set and elsewhere, it stays in the test set and is removed from the other source.
+
+**Protocol:**
+- Test candidates are chosen by metadata only: category, license, format, and size.
+- Eligibility and readings are labeled by the user, following `docs/labeling-guideline.md`.
+- No reader and no model looks at the test images before the labels and image hashes are committed. This includes the assistant, which is itself a VLM.

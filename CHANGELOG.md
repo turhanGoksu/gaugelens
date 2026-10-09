@@ -43,5 +43,15 @@ A released version is never changed: fixes ship as a new version.
 - Dev evaluation runner (`python -m evaluation.run_dev`): error in % of full
   scale, share within 1/2/5% FS, confidently wrong readings, abstentions,
   out-of-range handling, and a breakdown by camera tilt.
+- Test-set tooling:
+  - `python -m evaluation.commons` collects Wikimedia Commons candidates by
+    metadata only (license, format, size) and skips files whose readings
+    MeasureBench publishes.
+  - `python -m evaluation.label_tool` writes a local labeling page; labels
+    stay in the browser until exported as CSV.
+- Labeling guideline and evaluation protocol drafts
+  (`docs/labeling-guideline.md`, `docs/evaluation-protocol.md`): ±2% of full
+  scale is the primary tolerance. They are frozen together with the first
+  test labels.
 - Prior-art and license survey (`docs/prior-art-and-licenses.md`) and the
   design decision log (`docs/decisions.md`).

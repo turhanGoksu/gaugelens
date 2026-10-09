@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>gaugelens labeling</title>
+<style>
+:root { --bg:#f6f6f4; --panel:#fff; --text:#1d1d1b; --muted:#6b6b66; --line:#dddcd6;
+        --accent:#2f5d9e; --warn:#a33a2a; --ok:#2e7a3c; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#161615; --panel:#20201e; --text:#ecebe6; --muted:#9d9c95; --line:#3a3a36;
+          --accent:#7ea6e0; --warn:#e5806f; --ok:#7cc48a; }
+}
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--text);
+       font:14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:10px 16px;
+         border-bottom:1px solid var(--line); background:var(--panel); position:sticky; top:0; }
+header .grow { flex:1; }
+main { display:grid; grid-template-columns: minmax(0,1fr) 340px; gap:16px; padding:16px; }
+@media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+#viewer { background:var(--panel); border:1px solid var(--line); border-radius:8px;
+          overflow:auto; height:calc(100vh - 110px); cursor:zoom-in; }
+#viewer.zoomed { cursor:zoom-out; }
+#viewer img { display:block; max-width:100%; max-height:100%; margin:auto; }
+#viewer.zoomed img { max-width:none; max-height:none; }
+form { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:14px; }
+fieldset { border:none; padding:0; margin:0 0 12px; }
+legend { font-weight:600; margin-bottom:4px; }
+label { display:inline-flex; gap:4px; align-items:center; margin-right:10px; }
+input[type=text], input[type=number], select, textarea { width:100%; padding:6px 8px;
+  border:1px solid var(--line); border-radius:6px; background:var(--bg); color:var(--text); font:inherit; }
+.row { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px; }
+button { padding:6px 12px; border:1px solid var(--line); border-radius:6px; background:var(--bg);
+         color:var(--text); font:inherit; cursor:pointer; }
+button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+.muted { color:var(--muted); font-size:12px; }
+#message { min-height:20px; margin-top:8px; }
+#message.error { color:var(--warn); } #message.ok { color:var(--ok); }
+.mode { font-weight:600; }
+a { color:var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <span class="mode" id="mode"></span>
+  <span id="progress"></span>
+  <span class="grow"></span>
+  <button id="prev" title="Left arrow">&larr; Prev</button>
+  <button id="next" title="Right arrow">Next &rarr;</button>
+  <button id="next-open">Next unlabeled</button>
+  <button id="toggle-mode"></button>
+  <button id="export">Export CSV</button>
+  <label class="muted">Import CSV <input type="file" id="import" accept=".csv"></label>
+</header>
+<main>
+  <div id="viewer" title="Click to zoom"><img id="photo" alt=""></div>
+  <form id="form" autocomplete="off">
+    <div class="muted" id="source"></div>
+    <fieldset>
+      <legend>Eligible? (guideline section 1)</legend>
+      <label><input type="radio" name="eligible" value="yes"> eligible</label>
+      <label><input type="radio" name="eligible" value="no"> excluded</label>
+      <select name="exclusion_reason" id="reason"></select>
+    </fieldset>
+    <fieldset id="reading">
+      <legend>Scale (outer scale if there are two)</legend>
+      <div class="row">
+        <input type="number" step="any" name="min" placeholder="min">
+        <input type="number" step="any" name="max" placeholder="max">
+        <input type="text" name="unit" placeholder="unit" list="units">
+      </div>
+      <legend style="margin-top:10px">Reading (sections 3 and 4)</legend>
+      <div id="statuses"></div>
+      <input type="number" step="any" name="value" placeholder="value" style="margin-top:6px">
+      <div style="margin-top:8px">
+        <label><input type="radio" name="sure" value="yes"> sure</label>
+        <label><input type="radio" name="sure" value="no"> best guess</label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Notes</legend>
+      <textarea name="notes" rows="2"></textarea>
+    </fieldset>
+    <button class="primary" type="submit">Save and next (Enter)</button>
+    <div id="message"></div>
+  </form>
+</main>
+<datalist id="units"><option>bar</option><option>psi</option><option>kPa</option>
+<option>MPa</option><option>mbar</option><option>kg/cm²</option><option>°C</option>
+<option>°F</option><option>inHg</option></datalist>
+<script type="application/json" id="data">__DATA__</script>
+<script>
+"use strict";
+const DATA = JSON.parse(document.getElementById("data").textContent);
+const COLUMNS = DATA.columns;
+const KEYS = { first: "gaugelens-test-v1-labels", relabel: "gaugelens-test-v1-relabel" };
+let mode = "first";
+let index = 0;
+
+const $ = (id) => document.getElementById(id);
+const form = $("form");
+for (const r of DATA.reasons) $("reason").add(new Option(r, r));
+$("reason").add(new Option("(reason)", ""), 0);
+for (const s of DATA.statuses) {
+  const l = document.createElement("label");
+  l.innerHTML = `<input type="radio" name="status" value="${s}"> ${s}`;
+  $("statuses").appendChild(l);
+}
+
+function items() { return mode === "first" ? DATA.items : DATA.items.filter((i) => i.relabel); }
+function store() {
+  try { return JSON.parse(localStorage.getItem(KEYS[mode]) || "{}"); } catch { return {}; }
+}
+function save(all) {
+  try { localStorage.setItem(KEYS[mode], JSON.stringify(all)); return true; }
+  catch { return false; }
+}
+function message(text, kind) { $("message").textContent = text; $("message").className = kind || ""; }
+
+function show() {
+  const list = items();
+  index = Math.max(0, Math.min(index, list.length - 1));
+  const item = list[index];
+  const all = store();
+  const done = list.filter((i) => all[i.id]).length;
+  $("mode").textContent = mode === "first" ? "First pass" : "Relabel pass (10%)";
+  $("toggle-mode").textContent = mode === "first" ? "Switch to relabel" : "Switch to first pass";
+  $("progress").textContent = `${index + 1} / ${list.length} · labeled ${done}`;
+  $("photo").src = item.file;
+  $("viewer").classList.remove("zoomed");
+  $("source").innerHTML = `<a href="${item.page}" target="_blank" rel="noopener">${item.title}</a>`
+    + ` · ${item.license_name} · ${item.artist}`;
+  form.reset();
+  const label = all[item.id] || {};
+  for (const [k, v] of Object.entries(label)) {
+    const field = form.elements[k];
+    if (!field) continue;
+    if (field instanceof RadioNodeList) { for (const r of field) r.checked = r.value === v; }
+    else field.value = v;
+  }
+  message(label.labeled_at ? `Saved ${label.labeled_at}` : "", "ok");
+  update();
+}
+
+function update() {
+  const eligible = form.elements.eligible.value;
+  $("reason").disabled = eligible !== "no";
+  $("reading").disabled = eligible !== "yes";
+  form.elements.value.disabled = form.elements.status.value !== "value";
+}
+
+function read() {
+  const f = form.elements;
+  const label = {
+    eligible: f.eligible.value, exclusion_reason: f.exclusion_reason.value,
+    min: f.min.value, max: f.max.value, unit: f.unit.value.trim(),
+    status: f.status.value, value: f.value.value, sure: f.sure.value,
+    notes: f.notes.value.trim(),
+  };
+  if (!label.eligible) return [null, "Choose eligible or excluded."];
+  if (label.eligible === "no") {
+    if (!label.exclusion_reason) return [null, "Pick an exclusion reason."];
+    return [{ eligible: "no", exclusion_reason: label.exclusion_reason, notes: label.notes }, null];
+  }
+  label.exclusion_reason = "";
+  if (label.min === "" || label.max === "") return [null, "Enter min and max."];
+  if (Number(label.min) >= Number(label.max)) return [null, "min must be less than max."];
+  if (!label.status) return [null, "Pick a status."];
+  if (label.status === "value") {
+    if (label.value === "") return [null, "Enter the value."];
+    const v = Number(label.value);
+    if (v < Number(label.min) || v > Number(label.max))
+      return [null, "Value is outside min..max: use below_range or above_range."];
+  } else label.value = "";
+  if (!label.sure) return [null, "Mark sure or best guess."];
+  return [label, null];
+}
+
+form.addEventListener("change", update);
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const [label, error] = read();
+  if (error) { message(error, "error"); return; }
+  const item = items()[index];
+  const all = store();
+  all[item.id] = { ...label, labeled_at: new Date().toISOString() };
+  if (!save(all)) { message("Could not save: export your CSV now.", "error"); return; }
+  index += 1; show();
+});
+
+function csvCell(v) {
+  const s = String(v ?? "");
+  return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+}
+$("export").addEventListener("click", () => {
+  const all = store();
+  const rows = [COLUMNS.join(",")];
+  for (const item of items()) {
+    const label = all[item.id];
+    if (!label) continue;
+    const row = { id: item.id, file: item.file, sha256: item.sha256, ...label };
+    rows.push(COLUMNS.map((c) => csvCell(row[c])).join(","));
+  }
+  const blob = new Blob([rows.join("\n") + "\n"], { type: "text/csv" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = mode === "first" ? "labels.csv" : "relabel.csv";
+  a.click();
+  message(`Exported ${rows.length - 1} labels.`, "ok");
+});
+
+function parseCsv(text) {
+  const rows = []; let row = []; let cell = ""; let quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (quoted) {
+      if (c === '"' && text[i + 1] === '"') { cell += '"'; i++; }
+      else if (c === '"') quoted = false; else cell += c;
+    } else if (c === '"') quoted = true;
+    else if (c === ",") { row.push(cell); cell = ""; }
+    else if (c === "\n") { row.push(cell); rows.push(row); row = []; cell = ""; }
+    else if (c !== "\r") cell += c;
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  return rows;
+}
+$("import").addEventListener("change", async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+  const [head, ...body] = parseCsv(await file.text());
+  const all = store();
+  for (const cells of body) {
+    const row = Object.fromEntries(head.map((h, i) => [h, cells[i] ?? ""]));
+    const { id, file: _f, sha256: _s, ...label } = row;
+    if (id) all[id] = label;
+  }
+  save(all); show(); message(`Imported ${body.length} labels.`, "ok");
+});
+
+$("prev").addEventListener("click", () => { index -= 1; show(); });
+$("next").addEventListener("click", () => { index += 1; show(); });
+$("next-open").addEventListener("click", () => {
+  const list = items(); const all = store();
+  const next = list.findIndex((item, i) => i > index && !all[item.id]);
+  const first = list.findIndex((item) => !all[item.id]);
+  if (next >= 0 || first >= 0) { index = next >= 0 ? next : first; show(); }
+  else message("Everything here is labeled.", "ok");
+});
+$("toggle-mode").addEventListener("click", () => {
+  mode = mode === "first" ? "relabel" : "first"; index = 0; show();
+});
+$("viewer").addEventListener("click", () => $("viewer").classList.toggle("zoomed"));
+document.addEventListener("keydown", (event) => {
+  if (["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName)) return;
+  if (event.key === "ArrowLeft") { index -= 1; show(); }
+  if (event.key === "ArrowRight") { index += 1; show(); }
+});
+show();
+</script>
+</body>
+</html>
