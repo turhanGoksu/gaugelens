@@ -88,3 +88,23 @@ def test_collect_keeps_only_allowed_unpublished_images(tmp_path) -> None:
     assert rows[0]["artist"] == "Ada"
     assert len(rows[0]["sha256"]) == 64
     assert (tmp_path / rows[0]["file"]).read_bytes() == b"image bytes"
+
+
+def test_walk_skips_excluded_subcategories() -> None:
+    def fetch(url: str) -> bytes:
+        params = dict(urllib.parse.parse_qsl(urllib.parse.urlparse(url).query))
+        if params["cmtitle"] == "Category:Gauges":
+            members = [
+                {"ns": 6, "title": "File:A.jpg"},
+                {"ns": 14, "title": "Category:Rain gauges"},
+                {"ns": 14, "title": "Category:Manometers"},
+            ]
+        elif params["cmtitle"] == "Category:Manometers":
+            members = [{"ns": 6, "title": "File:B.jpg"}]
+        else:
+            members = [{"ns": 6, "title": "File:Rain.jpg"}]
+        return json.dumps({"query": {"categorymembers": members}}).encode()
+
+    found: dict[str, str] = {}
+    commons.walk(fetch, "Category:Gauges", 1, found, set())
+    assert sorted(found) == ["File:A.jpg", "File:B.jpg"]

@@ -36,6 +36,44 @@ CATEGORIES = [
     ("Category:Vacuum gauges", 2),
     ("Category:Gauges", 1),
 ]
+# Subcategories whose photos are not dial gauges with one needle: rain,
+# level and strain gauges, diagrams, clocks, barometers with a set hand, ...
+# Decided from the category names alone.
+EXCLUDED_CATEGORIES = {
+    f"Category:{name}"
+    for name in (
+        "Rain gauges",
+        "Snow gauges",
+        "Water gauges",
+        "Level gauges",
+        "Strain gauges",
+        "Length gauges",
+        "Angle gauges",
+        "Checking gauges",
+        "Thread gauges",
+        "Tire tread depth gauges",
+        "Musical string gauges",
+        "Evaluation scales",
+        "Emotiometer",
+        "Manometry",
+        "Diagrams of manometers",
+        "Diagrams of pressure gauges",
+        "Digital manometers",
+        "Ionization vacuum gauge",
+        "Hours meters",
+        "Full-empty gauges",
+        "Kontxa clocks",
+        "Diving watches with depth gauge",
+        "Barometers",
+        "Barographs",
+        "Baroscopes",
+        "Weatherglasses",
+        "Weather stations with thermometer, barometer and hygrometer",
+        "The barometer as the foot rule of the air",
+        "Hypsometer",
+        "Skywatch Xplorer 4",
+    )
+}
 MIN_SIDE = 400
 DOWNLOAD_WIDTH = 1600
 MIMES = {"image/jpeg": "jpg", "image/png": "png"}
@@ -75,7 +113,7 @@ def walk(
     fetch: Fetch, category: str, depth: int, found: dict[str, str], seen: set[str]
 ) -> None:
     """Add every file under ``category`` to ``found`` (title -> category)."""
-    if category in seen:
+    if category in seen or category in EXCLUDED_CATEGORIES:
         return
     seen.add(category)
     params: dict[str, Any] = {
