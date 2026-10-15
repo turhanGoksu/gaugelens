@@ -15,13 +15,20 @@ Label the image **eligible** only if all of these hold. Otherwise label it
 | # | Rule | Exclusion reason |
 |---|---|---|
 | 1 | It is a photo, not a drawing, render, diagram or screenshot. | `not_a_photo` |
-| 2 | Exactly one gauge is the subject. Other gauges may appear only if cut off by the frame. The subject may itself be cropped, as long as rule 5 holds. | `several_gauges` |
-| 3 | The dial is circular, with one needle and a linear scale: consecutive numbers are equally far apart along the arc. A second needle, such as a red drag pointer or a barometer's set hand, excludes it; so do digital displays. A painted mark on the dial or bezel is not a needle. | `out_of_scope` |
-| 4 | Values increase clockwise. | `counterclockwise` |
-| 5 | The numbers at the two ends of the scale are legible, so min and max are known. A scale marked only E–F or with colored zones and no numbers fails this rule. | `range_illegible` |
+| 2 | A gauge dial is in view: the face of a measuring instrument with a scale and a needle, turned toward the camera. Pipes, valves, regulators, the back or side of a gauge, or people and places with no dial in view fail this rule. | `no_dial` |
+| 3 | Exactly one gauge is the subject. Other gauges may appear only if cut off by the frame. The subject may itself be cropped, as long as rule 6 holds. | `several_gauges` |
+| 4 | The dial is circular, with one needle and a linear scale: consecutive numbers are equally far apart along the arc. A second needle, such as a red drag pointer or a barometer's set hand, excludes it; so do digital displays. A painted mark on the dial or bezel is not a needle. | `out_of_scope` |
+| 5 | Values increase clockwise. | `counterclockwise` |
+| 6 | The numbers at the two ends of the scale are legible, so min and max are known. A scale marked only E–F or with colored zones and no numbers fails this rule. | `range_illegible` |
 
 Gauges with two concentric scales (for example bar outside, psi inside) are
 eligible. Label the **outer** scale.
+
+Decide eligibility before readability. Two fully visible gauges make the
+image `several_gauges` even if only one of them is readable, and even if
+the second one is small: a reader given one range cannot know which gauge
+is meant, and keeping only the readable one would bias the test set toward
+easy images.
 
 ## 2. What to record for an eligible image
 

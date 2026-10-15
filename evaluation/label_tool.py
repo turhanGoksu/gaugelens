@@ -18,6 +18,7 @@ from pathlib import Path
 
 EXCLUSION_REASONS = [
     "not_a_photo",
+    "no_dial",
     "several_gauges",
     "out_of_scope",
     "counterclockwise",
