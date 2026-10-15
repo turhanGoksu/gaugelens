@@ -67,10 +67,13 @@ def write_page(folder: str | Path) -> Path:
             "license_name": r["license_name"],
             "artist": r["artist"],
             "relabel": in_relabel_sample(r["sha256"]),
+            "answer": r.get("answer"),
         }
         for r in rows
     ]
     data = {
+        # Practice sets carry answers; the page then shows feedback.
+        "practice": any(item["answer"] for item in items),
         "items": items,
         "columns": COLUMNS,
         "reasons": EXCLUSION_REASONS,

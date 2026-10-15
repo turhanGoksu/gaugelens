@@ -31,12 +31,19 @@ label { display:inline-flex; gap:4px; align-items:center; margin-right:10px; }
 input[type=text], input[type=number], select, textarea { width:100%; padding:6px 8px;
   border:1px solid var(--line); border-radius:6px; background:var(--bg); color:var(--text); font:inherit; }
 .row { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px; }
+.helper { margin-top:8px; padding:8px; border:1px dashed var(--line); border-radius:6px; }
+.helper .row { grid-template-columns: 1fr 1fr; margin:4px 0; }
+.fifths { display:flex; gap:4px; flex-wrap:wrap; }
+.fifths button { padding:4px 8px; }
 button { padding:6px 12px; border:1px solid var(--line); border-radius:6px; background:var(--bg);
          color:var(--text); font:inherit; cursor:pointer; }
 button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
 .muted { color:var(--muted); font-size:12px; }
 #message { min-height:20px; margin-top:8px; }
 #message.error { color:var(--warn); } #message.ok { color:var(--ok); }
+#feedback { margin-top:10px; padding:10px; border-radius:6px; border:1px solid var(--line); }
+#feedback:empty { display:none; }
+#feedback .right { color:var(--ok); } #feedback .wrong { color:var(--warn); }
 .mode { font-weight:600; }
 a { color:var(--accent); }
 </style>
@@ -73,6 +80,22 @@ a { color:var(--accent); }
       <legend style="margin-top:10px">Reading (sections 3 and 4)</legend>
       <div id="statuses"></div>
       <input type="number" step="any" name="value" placeholder="value" style="margin-top:6px">
+      <div class="helper">
+        <div class="muted">Helper: the tip is between these two ticks…</div>
+        <div class="row">
+          <input type="number" step="any" id="lower" placeholder="lower tick">
+          <input type="number" step="any" id="upper" placeholder="upper tick">
+        </div>
+        <div class="muted">…and this far past the lower one:</div>
+        <div class="fifths">
+          <button type="button" data-fifths="0">0</button>
+          <button type="button" data-fifths="1">1/5</button>
+          <button type="button" data-fifths="2">2/5</button>
+          <button type="button" data-fifths="3">3/5</button>
+          <button type="button" data-fifths="4">4/5</button>
+          <button type="button" data-fifths="5">5/5</button>
+        </div>
+      </div>
       <div style="margin-top:8px">
         <label><input type="radio" name="sure" value="yes"> sure</label>
         <label><input type="radio" name="sure" value="no"> best guess</label>
@@ -84,6 +107,7 @@ a { color:var(--accent); }
     </fieldset>
     <button class="primary" type="submit">Save and next (Enter)</button>
     <div id="message"></div>
+    <div id="feedback"></div>
   </form>
 </main>
 <datalist id="units"><option>bar</option><option>psi</option><option>kPa</option>
@@ -94,7 +118,10 @@ a { color:var(--accent); }
 "use strict";
 const DATA = JSON.parse(document.getElementById("data").textContent);
 const COLUMNS = DATA.columns;
-const KEYS = { first: "gaugelens-test-v1-labels", relabel: "gaugelens-test-v1-relabel" };
+const KEYS = DATA.practice
+  ? { first: "gaugelens-practice-labels", relabel: "gaugelens-practice-relabel" }
+  : { first: "gaugelens-test-v1-labels", relabel: "gaugelens-test-v1-relabel" };
+if (DATA.practice) document.getElementById("toggle-mode").hidden = true;
 let mode = "first";
 let index = 0;
 
@@ -124,7 +151,9 @@ function show() {
   const item = list[index];
   const all = store();
   const done = list.filter((i) => all[i.id]).length;
-  $("mode").textContent = mode === "first" ? "First pass" : "Relabel pass (10%)";
+  $("mode").textContent = DATA.practice
+    ? "Practice (answers shown)"
+    : mode === "first" ? "First pass" : "Relabel pass (10%)";
   $("toggle-mode").textContent = mode === "first" ? "Switch to relabel" : "Switch to first pass";
   $("progress").textContent = `${index + 1} / ${list.length} · labeled ${done}`;
   $("photo").src = item.file;
@@ -140,7 +169,55 @@ function show() {
     else field.value = v;
   }
   message(label.labeled_at ? `Saved ${label.labeled_at}` : "", "ok");
+  $("feedback").innerHTML = label.labeled_at ? feedback(item, label) : "";
   update();
+}
+
+function escapeHtml(text) {
+  return String(text).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+}
+
+// Practice mode: compare a label with the known answer.
+function feedback(item, label) {
+  const a = item.answer;
+  if (!a) return "";
+  const lines = [];
+  let right = true;
+  const said = (k) => escapeHtml(label[k] ?? "");
+  if (label.eligible !== a.eligible) {
+    right = false;
+    lines.push(`Eligible: you said <b>${said("eligible")}</b>, answer <b>${a.eligible}</b>`
+      + (a.exclusion_reason ? ` (${a.exclusion_reason})` : "") + ".");
+  } else if (a.eligible === "no") {
+    if (label.exclusion_reason !== a.exclusion_reason) {
+      right = false;
+      lines.push(`Reason: you chose <b>${said("exclusion_reason")}</b>, answer <b>${a.exclusion_reason}</b>.`);
+    }
+  } else {
+    for (const k of ["min", "max"]) {
+      if (Number(label[k]) !== a[k]) {
+        right = false;
+        lines.push(`${k}: you wrote <b>${said(k)}</b>, answer <b>${a[k]}</b>.`);
+      }
+    }
+    if (label.unit !== a.unit) lines.push(`unit: you wrote "${said("unit")}", answer "${a.unit}".`);
+    if (label.status !== a.status) {
+      right = false;
+      lines.push(`Status: you chose <b>${said("status")}</b>, answer <b>${a.status}</b>.`);
+    } else if (a.status === "value") {
+      const miss = Math.abs(Number(label.value) - a.exact);
+      const percent = (100 * miss) / (a.max - a.min);
+      const fifths = miss / (a.division / 5);
+      const ok = percent <= 2;
+      if (!ok) right = false;
+      lines.push(`Value: you wrote <b>${said("value")}</b>, answer <b>${a.value}</b>. `
+        + `Off by ${percent.toFixed(2)}% of full scale (${fifths.toFixed(1)} fifths of a division): `
+        + (ok ? "within ±2%." : "outside ±2%."));
+    }
+  }
+  const head = right ? '<b class="right">✓ Right</b>' : '<b class="wrong">✗ Not quite</b>';
+  return `${head}<br>${lines.join("<br>")}${lines.length ? "<br>" : ""}`
+    + `<span class="muted">${escapeHtml(a.explanation)}</span>`;
 }
 
 function update() {
@@ -178,6 +255,24 @@ function read() {
 }
 
 form.addEventListener("change", update);
+for (const button of document.querySelectorAll(".fifths button")) {
+  button.addEventListener("click", () => {
+    const lower = Number($("lower").value);
+    const upper = Number($("upper").value);
+    if ($("lower").value === "" || $("upper").value === "" || !(lower < upper)) {
+      message("Helper: enter the lower and the upper tick (lower < upper).", "error");
+      return;
+    }
+    // Round to the precision of one fifth of the division.
+    const step = (upper - lower) / 5;
+    const decimals = Math.max(0, Math.ceil(-Math.log10(step)));
+    const value = lower + (Number(button.dataset.fifths) / 5) * (upper - lower);
+    for (const r of form.elements.status) r.checked = r.value === "value";
+    update();
+    form.elements.value.value = Number(value.toFixed(decimals));
+    message(`Helper: value ${form.elements.value.value}`, "ok");
+  });
+}
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   const [label, error] = read();
@@ -186,6 +281,7 @@ form.addEventListener("submit", (event) => {
   const all = store();
   all[item.id] = { ...label, labeled_at: new Date().toISOString() };
   if (!save(all)) { message("Could not save: export your CSV now.", "error"); return; }
+  if (DATA.practice) { show(); message("Saved. Read the answer, then press Next.", "ok"); return; }
   index += 1; show();
 });
 

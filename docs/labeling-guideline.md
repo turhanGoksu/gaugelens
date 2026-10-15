@@ -15,10 +15,10 @@ Label the image **eligible** only if all of these hold. Otherwise label it
 | # | Rule | Exclusion reason |
 |---|---|---|
 | 1 | It is a photo, not a drawing, render, diagram or screenshot. | `not_a_photo` |
-| 2 | Exactly one gauge dial is fully visible. Other gauges may appear only if cut off by the frame. | `several_gauges` |
-| 3 | The dial is circular, with one needle and a linear scale (equal spacing between numbers). A second needle, such as a red drag pointer, excludes it. | `out_of_scope` |
+| 2 | Exactly one gauge is the subject. Other gauges may appear only if cut off by the frame. The subject may itself be cropped, as long as rule 5 holds. | `several_gauges` |
+| 3 | The dial is circular, with one needle and a linear scale: consecutive numbers are equally far apart along the arc. A second needle, such as a red drag pointer or a barometer's set hand, excludes it; so do digital displays. A painted mark on the dial or bezel is not a needle. | `out_of_scope` |
 | 4 | Values increase clockwise. | `counterclockwise` |
-| 5 | The numbers at the two ends of the scale are legible, so min and max are known. | `range_illegible` |
+| 5 | The numbers at the two ends of the scale are legible, so min and max are known. A scale marked only E–F or with colored zones and no numbers fails this rule. | `range_illegible` |
 
 Gauges with two concentric scales (for example bar outside, psi inside) are
 eligible. Label the **outer** scale.
@@ -28,14 +28,18 @@ eligible. Label the **outer** scale.
 | Field | Meaning |
 |---|---|
 | `min`, `max` | The numbers at the two ends of the labeled scale, as printed. |
-| `unit` | As printed (`bar`, `psi`, `kPa`, `MPa`, `kg/cm²`, `°C`, `°F`, ...). Empty if none is printed. |
+| `unit` | As printed (`bar`, `psi`, `kPa`, `MPa`, `kg/cm²`, `°C`, `°F`, ...). Empty if none is printed. If the dial prints a multiplier such as ×0.1 MPa, write `min` and `max` as printed and put the multiplier in the unit (`×0.1 MPa`). |
 | `status` | `value`, `below_range`, `above_range` or `unreadable` (section 4). |
 | `value` | The reading, for status `value` only (section 3). |
 | `sure` | `yes` if you would give the same reading again; `no` if it is a best guess within about one smallest division. |
 
 ## 3. How to read the value
 
-1. Find the two ticks the needle tip lies between.
+1. Find the two ticks the needle tip lies between. The smallest division is
+   the distance between two neighboring ticks; if there are no small ticks
+   between the numbers, it is the distance between two numbers. For a thick
+   needle, use the line through its middle; if the tip stops short of the
+   ticks, extend that line in your mind.
 2. Estimate where the tip's center line falls between them, to the nearest
    **one fifth of the smallest division**. Example: on a scale with 0.2 bar
    divisions, read to 0.04 bar.
@@ -43,13 +47,16 @@ eligible. Label the **outer** scale.
    angle in your head; if the angle makes the reading uncertain by more than
    one division, set `sure` to `no`.
 4. Write the value in the scale's units, with the decimals that the
-   precision needs.
+   precision needs. The labeling tool's helper does the arithmetic: enter
+   the ticks on both sides and click how many fifths past the lower one the
+   tip is.
 
 ## 4. Statuses
 
 - `below_range` / `above_range`: the needle is visibly past the min or max
   mark, by more than the width of the needle. A needle resting on the stop
-  pin below zero is `below_range`.
+  pin below zero is `below_range`. A needle exactly on the min mark, for
+  example resting on zero, is status `value` with the min value.
 - `unreadable`: the gauge is eligible but its reading cannot be determined.
   For example, glare or a reflection hides the needle tip, the needle cannot
   be located within one smallest division, or the image is too blurred.

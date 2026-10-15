@@ -15,6 +15,7 @@ data/raw/
 data/synthetic/
 data/external/
 data/backgrounds/
+data/practice/
 
 # Evaluation and training outputs
 runs/
