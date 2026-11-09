@@ -1,8 +1,9 @@
 # Evaluation protocol (pre-registered)
 
-_Status: draft. It is frozen when committed together with the test-set v1
-labels, before any system runs on the test images. Open items are marked
-**open** and must be settled before that commit._
+_Status: draft. The test-set v1 labels are committed first. This protocol is
+frozen in a later commit, before any system runs on the test images. Open
+items are marked **open** and must be settled before that commit. None of
+them is chosen by looking at the test set._
 
 ## Data
 
@@ -46,13 +47,28 @@ Images with label status `value`:
 
 - Labels marked `sure: no` are kept. Results on the `sure: yes` subset are
   reported as a robustness check.
+- Labels with an end value that is not printed on the dial (`inferred_end`,
+  guideline rule 6) are kept and reported as their own subset.
 - A 10% relabel, done at least one day later, gives the intra-rater
   agreement: identical status, and readings within ±2% FS.
 
+## Scale shape
+
+Gauges labeled `uneven_scale` (guideline rule 4, D12) stay in the test set.
+Every accuracy metric is also reported without them, because a reader that
+spaces values evenly between min and max has a built-in error on these
+dials.
+
 ## Uncertainty
 
-Every share comes with its sample size and a 95% Wilson confidence
-interval.
+Every share comes with its sample size, counted both in images and in
+gauges, and a 95% confidence interval.
+
+- Some gauges appear in more than one photo (marked `same gauge` in the
+  label notes, D13). Their photos are not independent, so intervals come
+  from a bootstrap that resamples gauges: all photos of a gauge are drawn
+  together. 10,000 resamples, percentile interval, fixed seed.
+- The Wilson interval over images is reported next to it for reference.
 
 ## Speed, size, cost
 

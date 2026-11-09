@@ -34,6 +34,8 @@ COLUMNS = [
     "min",
     "max",
     "unit",
+    "inferred_end",
+    "uneven_scale",
     "status",
     "value",
     "sure",

@@ -71,12 +71,16 @@ a { color:var(--accent); }
       <select name="exclusion_reason" id="reason"></select>
     </fieldset>
     <fieldset id="reading">
-      <legend>Scale (outer scale if there are two)</legend>
+      <legend>Scale (the primary scale if there are two)</legend>
       <div class="row">
         <input type="number" step="any" name="min" placeholder="min">
         <input type="number" step="any" name="max" placeholder="max">
         <input type="text" name="unit" placeholder="unit" list="units">
       </div>
+      <label style="margin-top:6px"><input type="checkbox" name="inferred_end" value="yes">
+        an end number is not printed; its value follows from the scale (rule 6)</label>
+      <label><input type="checkbox" name="uneven_scale" value="yes">
+        uneven scale: one section, usually the first, is spaced differently (rule 4)</label>
       <legend style="margin-top:10px">Reading (sections 3 and 4)</legend>
       <div id="statuses"></div>
       <input type="number" step="any" name="value" placeholder="value" style="margin-top:6px">
@@ -166,6 +170,7 @@ function show() {
     const field = form.elements[k];
     if (!field) continue;
     if (field instanceof RadioNodeList) { for (const r of field) r.checked = r.value === v; }
+    else if (field.type === "checkbox") field.checked = v === "yes";
     else field.value = v;
   }
   message(label.labeled_at ? `Saved ${label.labeled_at}` : "", "ok");
@@ -234,6 +239,8 @@ function read() {
     min: f.min.value, max: f.max.value, unit: f.unit.value.trim(),
     status: f.status.value, value: f.value.value, sure: f.sure.value,
     notes: f.notes.value.trim(),
+    inferred_end: f.inferred_end.checked ? "yes" : "",
+    uneven_scale: f.uneven_scale.checked ? "yes" : "",
   };
   if (!label.eligible) return [null, "Choose eligible or excluded."];
   if (label.eligible === "no") {

@@ -148,4 +148,41 @@ The full fix is projective rectification: given the ellipse and the true center,
 **Protocol:**
 - Test candidates are chosen by metadata only: category, license, format, and size.
 - Eligibility and readings are labeled by the user, following `docs/labeling-guideline.md`.
-- No reader and no model looks at the test images before the labels and image hashes are committed. This includes the assistant, which is itself a VLM.
+- No evaluated reader or model looks at the test images before the labels and image hashes are committed. The assistant's role is set by D11.
+
+## D11 — The assistant and the test images (2026-10-15)
+
+**Decision:** the assistant may look at test candidates, both for rule questions and to review labels. The images stay in the test set.
+- Labels are the author's. When the assistant disagrees with a reading, it asks the author to re-read the image instead of supplying a value, and the author decides.
+- The author's intra-rater agreement (first pass vs. the 10% relabel) is computed before any review, so that number is untouched by the assistant.
+- Images the assistant saw are logged in `data/raw/commons/shown_to_assistant.jsonl`.
+- The test set's documentation describes the labeling process in one factual sentence, for example: "labeled by the author; an AI assistant, which is not one of the evaluated systems, was consulted on rule questions and reviewed the labels."
+
+**Why:**
+- The evaluated systems never see the test images, so their results stay pre-registered.
+- The review catches rule mistakes early.
+- The assistant reads gauges poorly, so readings stay with the author.
+
+## D12 — Uneven scales stay in the test set (2026-10-17)
+
+**Decision:** a dial whose numbers are evenly spaced except in one section, most often a shortened first section, is eligible. Its label is marked `uneven_scale`, and results are reported with and without these dials. Scales whose spacing changes along the whole sweep (logarithmic, square-root) stay out of scope.
+
+**Why:**
+- The pattern is common on ordinary gauges: in a check of the eligible dials among the first 53 candidates, 8 of the 15 whose marks could be counted had it, from cheap 0–11 bar regulator gauges to old brass ones.
+- A user would not notice it, so to them these are normal gauges. Excluding them would make the test set easier than real use.
+- A reader that spaces values evenly between min and max has a built-in error on these dials, about 1.5–2% FS near the low end on the ones measured. That is the kind of weakness the comparison should show, not hide.
+
+**Unprinted start:** on a pressure gauge, an unprinted start mark is labeled 0 and marked both `inferred_end` and `uneven_scale`, even when counting back with even spacing lands above 0. A pressure scale starts at 0 unless another start number is printed. If that assumption is wrong for a dial, the error stays inside two subsets that are reported on their own.
+
+**Rejected:** excluding dials whose shape error exceeds 1% FS. Measuring that from a photo needs the dial's true center, and on tilted photos a few pixels of center error move the result by about 1% FS. The decision would then depend on the measurement more than on the dial. Counting gaps does not have this problem.
+
+## D13 — Several photos of the same gauge (2026-11-03)
+
+**Decision:** photos that show the same physical gauge all stay in the test set. Each is labeled on its own, and the notes of each say `same gauge: <pages>`. Confidence intervals come from a bootstrap that resamples gauges, not photos.
+
+**Why:**
+- Different photos of one gauge differ in angle, light, and often the reading, so each is a real test case. Keeping only one would throw away data.
+- But they are not independent: a design that fails on a gauge's face tends to fail on all of its photos. Counting them as independent would make the intervals look narrower than the evidence supports.
+- Resampling whole gauges keeps every photo and still gives honest intervals. Sample sizes are reported in images and in gauges.
+
+**Seen so far:** 6/7, 33/34, 93/94/95 and 183/184 among the eligible images of the first 200 candidates.
