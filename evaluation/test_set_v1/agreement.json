@@ -1,0 +1,896 @@
+{
+ "summary": {
+  "date": "2026-11-07",
+  "computed_before_review": true,
+  "pages": 47,
+  "excluded_from_agreement": [
+   33,
+   481
+  ],
+  "eligibility_agreement": [
+   47,
+   47,
+   [
+    0.924,
+    1.0
+   ]
+  ],
+  "reason_agreement_both_excluded": [
+   26,
+   26,
+   [
+    0.871,
+    1.0
+   ]
+  ],
+  "range_agreement_both_eligible": [
+   21,
+   21,
+   [
+    0.845,
+    1.0
+   ]
+  ],
+  "status_agreement_both_eligible": [
+   21,
+   21,
+   [
+    0.845,
+    1.0
+   ]
+  ],
+  "reading_agreement_2pct_both_eligible": [
+   21,
+   21,
+   [
+    0.845,
+    1.0
+   ]
+  ],
+  "median_abs_diff_pct_fs": 0.0,
+  "max_abs_diff_pct_fs": 0.0,
+  "first_pass_snapshot": "labels as exported 2026-11-05 12:14, before any relabel or review",
+  "excluded_ids": [
+   "commons_112781964",
+   "commons_97601141"
+  ]
+ },
+ "pages": [
+  {
+   "page": 18,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "several_gauges",
+    "several_gauges"
+   ],
+   "id": "commons_10843436"
+  },
+  {
+   "page": 20,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "350",
+     "",
+     "below_range"
+    ],
+    [
+     "0",
+     "350",
+     "",
+     "below_range"
+    ]
+   ],
+   "id": "commons_109331145"
+  },
+  {
+   "page": 41,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "160",
+     "psi",
+     "value"
+    ],
+    [
+     "0",
+     "160",
+     "psi",
+     "value"
+    ]
+   ],
+   "id": "commons_114030720"
+  },
+  {
+   "page": 48,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "200",
+     "",
+     "value"
+    ],
+    [
+     "0",
+     "200",
+     "",
+     "value"
+    ]
+   ],
+   "id": "commons_118489832"
+  },
+  {
+   "page": 51,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "400",
+     "bar",
+     "value"
+    ],
+    [
+     "0",
+     "400",
+     "bar",
+     "value"
+    ]
+   ],
+   "id": "commons_12092392"
+  },
+  {
+   "page": 76,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "several_gauges",
+    "several_gauges"
+   ],
+   "id": "commons_133669351"
+  },
+  {
+   "page": 83,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "160",
+     "psi",
+     "value"
+    ],
+    [
+     "0",
+     "160",
+     "psi",
+     "value"
+    ]
+   ],
+   "id": "commons_141295968"
+  },
+  {
+   "page": 86,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "150",
+     "",
+     "value"
+    ],
+    [
+     "0",
+     "150",
+     "",
+     "value"
+    ]
+   ],
+   "id": "commons_142092458"
+  },
+  {
+   "page": 91,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "no_dial",
+    "no_dial"
+   ],
+   "id": "commons_145090595"
+  },
+  {
+   "page": 96,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "several_gauges",
+    "several_gauges"
+   ],
+   "id": "commons_15098580"
+  },
+  {
+   "page": 98,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "25",
+     "",
+     "value"
+    ],
+    [
+     "0",
+     "25",
+     "",
+     "value"
+    ]
+   ],
+   "id": "commons_153397694"
+  },
+  {
+   "page": 103,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "not_a_photo",
+    "not_a_photo"
+   ],
+   "id": "commons_158448167"
+  },
+  {
+   "page": 109,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "no_dial",
+    "no_dial"
+   ],
+   "id": "commons_16414336"
+  },
+  {
+   "page": 117,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "out_of_scope",
+    "out_of_scope"
+   ],
+   "id": "commons_169563415"
+  },
+  {
+   "page": 124,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "no_dial",
+    "no_dial"
+   ],
+   "id": "commons_176812322"
+  },
+  {
+   "page": 140,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "200",
+     "bar",
+     "value"
+    ],
+    [
+     "0",
+     "200",
+     "bar",
+     "value"
+    ]
+   ],
+   "id": "commons_18319272"
+  },
+  {
+   "page": 162,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "no_dial",
+    "no_dial"
+   ],
+   "id": "commons_198923725"
+  },
+  {
+   "page": 163,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "no_dial",
+    "no_dial"
+   ],
+   "id": "commons_198923726"
+  },
+  {
+   "page": 177,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "several_gauges",
+    "several_gauges"
+   ],
+   "id": "commons_23102141"
+  },
+  {
+   "page": 178,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "no_dial",
+    "no_dial"
+   ],
+   "id": "commons_23129760"
+  },
+  {
+   "page": 181,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "100",
+     "psi",
+     "value"
+    ],
+    [
+     "0",
+     "100",
+     "psi",
+     "value"
+    ]
+   ],
+   "id": "commons_23595520"
+  },
+  {
+   "page": 238,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "several_gauges",
+    "several_gauges"
+   ],
+   "id": "commons_3859861"
+  },
+  {
+   "page": 243,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "200",
+     "",
+     "value"
+    ],
+    [
+     "0",
+     "200",
+     "",
+     "value"
+    ]
+   ],
+   "id": "commons_38905258"
+  },
+  {
+   "page": 246,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "out_of_scope",
+    "out_of_scope"
+   ],
+   "id": "commons_39269677"
+  },
+  {
+   "page": 268,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "3",
+     "53",
+     "",
+     "value"
+    ],
+    [
+     "3",
+     "53",
+     "",
+     "value"
+    ]
+   ],
+   "id": "commons_41602267"
+  },
+  {
+   "page": 279,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "2500",
+     "bar",
+     "value"
+    ],
+    [
+     "0",
+     "2500",
+     "bar",
+     "value"
+    ]
+   ],
+   "id": "commons_45043393"
+  },
+  {
+   "page": 306,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "250",
+     "",
+     "value"
+    ],
+    [
+     "0",
+     "250",
+     "",
+     "value"
+    ]
+   ],
+   "id": "commons_51024281"
+  },
+  {
+   "page": 326,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "100",
+     "",
+     "value"
+    ],
+    [
+     "0",
+     "100",
+     "",
+     "value"
+    ]
+   ],
+   "id": "commons_5694239"
+  },
+  {
+   "page": 327,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "300",
+     "",
+     "value"
+    ],
+    [
+     "0",
+     "300",
+     "",
+     "value"
+    ]
+   ],
+   "id": "commons_5694246"
+  },
+  {
+   "page": 337,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "several_gauges",
+    "several_gauges"
+   ],
+   "id": "commons_5694389"
+  },
+  {
+   "page": 346,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "250",
+     "",
+     "value"
+    ],
+    [
+     "0",
+     "250",
+     "",
+     "value"
+    ]
+   ],
+   "id": "commons_59061038"
+  },
+  {
+   "page": 347,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "no_dial",
+    "no_dial"
+   ],
+   "id": "commons_59186843"
+  },
+  {
+   "page": 349,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "24",
+     "kg/cm²",
+     "value"
+    ],
+    [
+     "0",
+     "24",
+     "kg/cm²",
+     "value"
+    ]
+   ],
+   "id": "commons_59238643"
+  },
+  {
+   "page": 354,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "several_gauges",
+    "several_gauges"
+   ],
+   "id": "commons_62078028"
+  },
+  {
+   "page": 361,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "no_dial",
+    "no_dial"
+   ],
+   "id": "commons_6468676"
+  },
+  {
+   "page": 363,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "not_a_photo",
+    "not_a_photo"
+   ],
+   "id": "commons_64877757"
+  },
+  {
+   "page": 379,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "250",
+     "bar",
+     "value"
+    ],
+    [
+     "0",
+     "250",
+     "bar",
+     "value"
+    ]
+   ],
+   "id": "commons_69375990"
+  },
+  {
+   "page": 406,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "several_gauges",
+    "several_gauges"
+   ],
+   "id": "commons_75536945"
+  },
+  {
+   "page": 423,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "60",
+     "bar",
+     "value"
+    ],
+    [
+     "0",
+     "60",
+     "bar",
+     "value"
+    ]
+   ],
+   "id": "commons_7894553"
+  },
+  {
+   "page": 426,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "no_dial",
+    "no_dial"
+   ],
+   "id": "commons_80268982"
+  },
+  {
+   "page": 429,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "several_gauges",
+    "several_gauges"
+   ],
+   "id": "commons_823772"
+  },
+  {
+   "page": 442,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "several_gauges",
+    "several_gauges"
+   ],
+   "id": "commons_8741353"
+  },
+  {
+   "page": 448,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "100",
+     "bar",
+     "value"
+    ],
+    [
+     "0",
+     "100",
+     "bar",
+     "value"
+    ]
+   ],
+   "id": "commons_88550464"
+  },
+  {
+   "page": 457,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "out_of_scope",
+    "out_of_scope"
+   ],
+   "id": "commons_90016734"
+  },
+  {
+   "page": 468,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "out_of_scope",
+    "out_of_scope"
+   ],
+   "id": "commons_954629"
+  },
+  {
+   "page": 474,
+   "first": "no",
+   "re": "no",
+   "elig_agree": true,
+   "reason_agree": true,
+   "detail": [
+    "no_dial",
+    "no_dial"
+   ],
+   "id": "commons_96644763"
+  },
+  {
+   "page": 479,
+   "first": "yes",
+   "re": "yes",
+   "elig_agree": true,
+   "range_agree": true,
+   "status_agree": true,
+   "err_fs": 0.0,
+   "read_agree": true,
+   "detail": [
+    [
+     "0",
+     "15",
+     "psi",
+     "value"
+    ],
+    [
+     "0",
+     "15",
+     "psi",
+     "value"
+    ]
+   ],
+   "id": "commons_97436732"
+  }
+ ]
+}
