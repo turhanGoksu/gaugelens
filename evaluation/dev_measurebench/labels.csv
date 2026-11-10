@@ -1,0 +1,140 @@
+id,sha256,eligible,exclusion_reason,min,max,unit,inferred_end,reading_index,notes
+pressure_gauge_0,6ed53015d172fb3204a046ca5f91f71faaf6db59c10e97c7d6bcfdcf8a972ef4,yes,,0,10,bar,,0,
+pressure_gauge_1,e60e81db447967e37233e2d1f3162f3ae75a3c3c899af23f10ac0d30eed0d361,no,out_of_scope,,,,,,red second pointer
+pressure_gauge_2,02d29941b302d0ff659e83125f6e994d4f7f6742b8e6df2544dfd1b1d3187b0e,yes,,-100,500,kPa,,0,
+pressure_gauge_3,2a934dae4c1de15779bbf5eb00ca0cc499b27eb6450b474ed467b642d33cd0b8,yes,,0,28000,kPa,yes,0,outer kPa scale; 0 not printed
+pressure_gauge_4,14596703c6e3808f3d2ab90ea25f70bf85417335c3d195691396e1ce893e14d1,no,same_gauge_as_test,,,,,,"MAXIMATOR gauge of test candidate commons_45045263 (page 279), other photo"
+pressure_gauge_5,9d9296b6890436a2086e5c74a0323929f8fc1dc87825878683d869ade7931db6,no,out_of_scope,,,,,,aneroid barometer with set hand
+pressure_gauge_6,9d94267a5d9fbf7ebad9640939e8cc0e1195314c993a2b0674c3350ff516666b,no,duplicate_image,,,,,,same image as pressure_gauge_5
+pressure_gauge_7,14dd70cbdf73d49e637be2d403b33fb849b5d9e15795e6b97aeca577be5ea329,no,out_of_scope,,,,,,"two needles, two scales"
+pressure_gauge_8,b3e13fdca2876c27557ceccb7a38984e7046ce69e808d0e766822c02fb69b3f2,no,duplicate_image,,,,,,same image as pressure_gauge_7
+pressure_gauge_9,c4e4ce94735e107ec0badb3e4183f3db8a5997c410530e837310ad6cbe5a3eb1,yes,,0,400,bar,,0,
+pressure_gauge_10,a43c38d27cbbf896133a5322127c0eab39fedd8085eed048736f723ac449e14e,no,reading_outside_range,,,,,,MeasureBench interval 1.9-2.1 MPa lies outside the 0-1 MPa scale
+pressure_gauge_11,84cb3e3f6a4d8abbc03b6cd057cab76e20f27a72e549b5419b6d55f413e85d1a,no,same_gauge_as_test,,,,,,"MAXIMATOR gauge of test page 279, other photo"
+pressure_gauge_12,c7db182f70a49403199477e70fc243dd5bc6426091063d5c01740541e5b977b0,no,not_a_photo,,,,,,drawing
+pressure_gauge_13,4d9c60c75ea24f40db02dbfefdabadbb67e403b38d2a204ac87997120efe83b2,no,out_of_scope,,,,,,barometer with set hand
+pressure_gauge_14,cb62e79ee65659073d7e336dc008af29929143ab99765f67a8a2d34cdd1cae1c,yes,,0,10,kg/cm²,,0,
+pressure_gauge_15,44dbd4bb6be80d09a5f3b0152c43e886efd0637e8fc756fac583d65bc0cc33d6,no,out_of_scope,,,,,,red drag pointer
+pressure_gauge_16,44dbd4bb6be80d09a5f3b0152c43e886efd0637e8fc756fac583d65bc0cc33d6,no,duplicate_image,,,,,,same image as pressure_gauge_15
+pressure_gauge_17,fa56e5c43c502e848778336d6eac86d242b44fcf3b413e55590a29336b4fd69b,yes,,0,200,psi,,0,
+pressure_gauge_18,b4557c414463e902c228a0a27cd4b5e91167d8a9b04f73152b278a4724c5c70a,yes,,0,200,psi,,0,
+pressure_gauge_19,26e8bb2e5c5f84ec5839433679834317fb9d9172425958b74f2c2d375cd5491c,yes,,0,10,kg/cm²,,0,
+pressure_gauge_20,4fe42cf7b242a4936998c11e270b6cd144808a837924ba6621eb1243b96bbfe7,yes,,0,100,psi,,0,
+pressure_gauge_21,af324f38b278fb66bc078e9a0bdfc6876e5dd2000bcc863af14d3847ae64b6ec,yes,,0,60,psi,,0,
+pressure_gauge_22,0569ad66839a4b662c3202e821e904cc2417664833dbb37730a55e45a5a69ca4,yes,,0,160,psi,,0,
+pressure_gauge_23,f575ef26fdc100129b21f2326d29cf83d8387677a1f86e18a330d140211362f2,yes,,0,100,psi,,0,
+pressure_gauge_24,04c9d87e26fea1d9e04efa560e645c66d7aa84e0945c865fb71137bedb74a83a,yes,,0,120,psi,,0,dial seen rotated
+pressure_gauge_25,b82ed18adc85566f32a3dabf7098e233c5dcde51d247439d4103c643e39d9e58,yes,,0,200,psi,,0,
+pressure_gauge_26,5db5e430b2f735d98b9f7523ef787d94d5db04914b17f627501ea888ba417069,yes,,0,400,psi,,0,
+pressure_gauge_27,2cc9a765f6d88b939873129382b71a82a5daa9132ea1875186f0f7ac68e0f3d0,yes,,0,120,PSI,yes,0,
+pressure_gauge_28,32a4cbb374a09fbbe86128faab76c69426b02dab9915bdf48a0d635609cf497d,yes,,0,100,psi,yes,0,
+pressure_gauge_29,f7360a211a2181de2387e3f8349b16c9a8c884f1cbecced0a8c0610f28959198,yes,,0,60,psi,,0,
+pressure_gauge_30,fedb27bc932519445ab1e9e9f0674222d73d1444d282e6ea6f6a46b7f53a628f,no,reading_suspect,,,,,,MeasureBench interval 2-5 without unit; the needle tip is near 70
+pressure_gauge_31,6dcb24c4e2a987324d19238ddb1dde9f734b2ff1a448109bfb0f7b6d79377030,yes,,0,140,psi,yes,0,
+pressure_gauge_32,58491bca6bb8ce804d460e914cce229ba72fc37b1adf60a6695a8277b8a5b55f,yes,,0,50,INCHES OF WATER,,0,
+pressure_gauge_33,146454306f375952c844266276d08abb4c22ae0f580c09055de73869bf4e4da6,yes,,0,100,psi,,0,dial seen rotated
+pressure_gauge_34,d3951aa293d27a9dfa165d8ffdb7078688048bb77ab0b8b6f646ec33e1ef9239,yes,,0,1.6,MPa,,1,"image upside down; outer psi end hidden, inner MPa scale used"
+pressure_gauge_35,c4ba18eff8e555d137246812de089ec8e05ac06af150c27112caa71ea8e10a3c,no,out_of_scope,,,,,,bar scale steps 0.5 then 1 with the same spacing (not linear)
+pressure_gauge_36,5de21fde57c5b229e4f183d119a9c828622ce1d8b80acd99fb6cc67a10157d12,yes,,0,25,kgf/cm²,,0,
+pressure_gauge_37,620b531dcdb259fbfe8f1290c3c0ce4c8fa29bd4f20e7bd8af4b7d8e2167f764,no,range_illegible,,,,,,dial too small
+pressure_gauge_38,a56e67bf3e934f0935028ce2b742fe9e700f04c30c7ebcec9497ac1ecfe4a4c4,yes,,0,1,MPa,,0,
+pressure_gauge_39,5608ea1560593de50e30074eeb488261566ac7fc86ac2d787f827e28d9a1db8b,no,several_gauges,,,,,,second dial on the wall behind
+pressure_gauge_40,b0170da11409cfb6995310b18884cb01b834124e7d21e26259e5a3bd9caba029,no,out_of_scope,,,,,,electric contact gauge with two set pointers
+pressure_gauge_41,19bdc3138c8ca034226cc6359533f66bf9bbdb90dff83a128cc44b7c56292ca4,yes,,0,1,КГС/СМ²,,0,
+pressure_gauge_42,e4bf70b08f2ba08a1500247ce6339e64cbbadd51e0cc2d56fa19ea56289c6c28,yes,,0,60,psi,yes,1,
+pressure_gauge_43,502ef71be2a031ecdec04d6f14e2f1599df5961b179fa24ffff62547aac0fb77,yes,,10,50,LBS/IN²,,0,
+pressure_gauge_44,f796b5e57d979c3de0126ed530a5c69f0c0a4a1b94fe1ab9dfd7f4130f9db13a,yes,,0,1.5,MPa,,0,same gauge: 44/64
+pressure_gauge_45,2fcc73d9eb84231fcbaba9ecf3088ff3a6588b1fd2e8a3875c70879c1c402fad,no,several_gauges,,,,,,"two dials, each with a red set pointer"
+pressure_gauge_46,2fcc73d9eb84231fcbaba9ecf3088ff3a6588b1fd2e8a3875c70879c1c402fad,no,duplicate_image,,,,,,same image as pressure_gauge_45
+pressure_gauge_47,d50815df323a52189e02dd206c6428fef2017baf76418a34c4d6e37bff5d8b2b,yes,,0,0.4,MPa,yes,0,
+pressure_gauge_48,a6aca2d894b2c1399d0f437250882aced447295b31a1522bcdb0e1120ecc2ad1,no,out_of_scope,,,,,,red second needle
+pressure_gauge_49,6587be9f5713e79b86aaa8fc55495c5712a0fe61417afa923f5ec27b84316452,no,several_gauges,,,,,,three dials
+pressure_gauge_50,c6b25bfae9fe9122b8c4659b9b31fd9bd0dc34965d420fefff510dcc9f4c0291,yes,,0,0.1,MPa,,0,
+pressure_gauge_51,ac1c81261cb68fb81cec3a319df728cae30999ff494da02258c6114ca2d696c4,no,out_of_scope,,,,,,red set pointer
+pressure_gauge_52,3de43b4bd7c4c8d45dd31af0c3ae3b534cf92e283bcff37e593cf5340bfadb2b,yes,,0,10,kgf/cm²,,0,
+pressure_gauge_53,f51aa2e24e8cc46823d2bfe07b1152415d4b1e25bdc676c7344c8e59149765ba,yes,,0,2.5,MPa,,0,same gauge: 53/54
+pressure_gauge_54,d68b938c6f18bd155e33f85c501429f074c81f5d0dc46e985874916eb8aff805,yes,,0,2.5,MPa,,0,same gauge: 53/54
+pressure_gauge_55,232de86d1adb1db441a197b61ce7f943b404478ef652ae90a6915999bfe0d8ad,yes,,0,1,MPa,,0,same gauge: 55/60
+pressure_gauge_56,a23478b650f54fab2aab6d9651fb2316464b2851cd7ce5346a88ab7dda1914c5,yes,,0,1,MPa,,0,
+pressure_gauge_57,bf26c8ee8742bc99ca23f4be2c00651e95e2f53e182aead3793b4d9de75e467e,yes,,0,0.6,MPa,,0,
+pressure_gauge_58,ad04c390f74bdda18ad9337c76e566f81e4a0b2bb209285e803bdd9ce667a65c,yes,,0,25,MPa,,0,
+pressure_gauge_59,3c4c6a4d24c5f99b8d59fee84686fe39d0884685ad1f54a5d75ca120c1462c33,yes,,0,0.2,MPa,,0,
+pressure_gauge_60,c287da87d002748df380ec0832fd4dba8a88dc6e76317451be768176c5839134,yes,,0,1,MPa,,0,same gauge: 55/60; image upside down
+pressure_gauge_61,f4863413d9e651c6a7c3db22bef9de3bda9b9b2decc22f72b6a59ff90036b549,no,out_of_scope,,,,,,"loose dial face with ATM, psi and vacuum scales; low end compressed"
+pressure_gauge_62,1b36aa67ccbcc7d80274fa58c2225f11e5ea06d8943320d11f1140a8250e627f,no,out_of_scope,,,,,,red second needle behind the black one
+pressure_gauge_63,2df27f3780952ff7ffde5e78dc00278c78c70322df4a43e044736b2ae5aa7f53,yes,,0,180,psi,,0,
+pressure_gauge_64,dd4d941a24e87f0ff2fae700e71d7073946d3d9f49ab19d7811aa4090f91ac28,yes,,0,1.5,MPa,,0,same gauge: 44/64
+pressure_gauge_65,2d93b4e0832cbb074cadd5b20c1f25510b10ad5a5e85139ee2395864c6d14b95,no,several_gauges,,,,,,two dials with red pointers; same panel as 45
+pressure_gauge_66,8de30c98207ca6e0775d8321f9ed0929629a4bd6e5b0dc65aa4441d825f195fe,yes,,0,9.8,×10⁻¹ MPa,,0,"fire extinguisher gauge; reading given in MPa, convert x10"
+pressure_gauge_67,36a931b65f0201e57538f72e67cc5ad3cfce6fcc69d2cf458bd0636206492eb2,yes,,0,0.2,MPa,,0,
+pressure_gauge_68,110d7f901dba0bd235c9ee621455ca1a16693f8b43d286e132674caae3e0ecf5,no,reading_suspect,,,,,,"MeasureBench interval 0.7-0.98 MPa copied from pg_66; scale x10^-1 MPa, needle near 9.8"
+pressure_gauge_69,3156817c132f40072add84367af8ca36a89dd7c36d1f8e9211e192735b39776a,no,range_illegible,,,,,,dial washed out; scale ends not legible
+pressure_gauge_70,2ce33bc4c921a0731a3a28b00b2d959d8a90b4a20158442407834be3a2bac0f1,yes,,0,7,kg/cm²,,0,inner psi scale faint
+pressure_gauge_71,c0626a14ab1e3791f105424dec0374edc242002b61ff1677c33c85196caadfad,yes,,0,60,PSI,,0,
+pressure_gauge_72,d382805f0bba27d3625b29c31bfbf5e6ae649c2a2e9a476d138bf8a24f18352d,yes,,0,5000,psi,,0,
+pressure_gauge_73,044de94a14cdc594f434b8380b0e734d0b1d415c2436d1d94fd91d7325949a61,yes,,0,30,psi,,0,
+pressure_gauge_74,565e8b642e7616ba6dff8eb71bbe4ae50262c0f0c37a8f907f6fa0d2fcf729f9,no,range_illegible,,,,,,"small, blurred dial"
+pressure_gauge_75,834cdcc8c3a06ed1e4f4aafafc4b7b64642b9af92ff5082bac3197ced1d9a434,yes,,0,60,PSI,yes,0,electronic backlit gauge with a real needle
+pressure_gauge_76,4598e3bcb954d4bd51a4704349c4a1dc06a0819ce7e86ed58878f23bd84aff67,yes,,0,60,psi,,0,
+pressure_gauge_77,4dcccb51257be0194ec37c0e0f95d7468a208dc407cd9039a98b1277c774d99d,yes,,0,600,psi,,0,
+pressure_gauge_78,cbe22d72a2990ace4c5aa446fcd46df59cd54483863f1c61be4f1557aeb8f0fb,no,out_of_scope,,,,,,numbers 0..60 then 150 at the same spacing (not linear)
+pressure_gauge_79,940592eb994ec0153bb4116e3960fde9bf72c682b81d24a35677f89b7fece25a,yes,,0,16,kg/cm²,,1,outer kg/cm² scale; inner psi 0-225
+pressure_gauge_80,16f5b80a34f8c88d6a367f2b49af17b6df0040f66b160a473716d7e84fcfd59b,no,out_of_scope,,,,,,refrigerant manifold gauge: compound vacuum/pressure plus temperature rings
+pressure_gauge_81,db0c796a59e9c80c88ace0c1dc5cff784e7e08df0866da143548401e7f2b5eaf,no,range_illegible,,,,,,dial rotated and partly reflected; ends not legible
+pressure_gauge_82,11bffe90a687b6ba8b584ef5f356b8757d9558ecba879445a627ce6b5cf993d0,yes,,0,100,PSI,yes,0,
+pressure_gauge_83,949c0ad9fab5aa98021b7169e16fa5afad513b6e3a86d1901e30c64d093a8261,yes,,0,60,psi,yes,0,
+pressure_gauge_84,61250850fe3e4743a66b866f077e7e71555aaabebf00f8db0f6132b46e143bcb,yes,,0,200,psi,,0,
+pressure_gauge_85,ab27b820b60b197528c24911f21470a78bf95824c704bda405ed5c429757391b,yes,,0,100,PSI,,0,
+pressure_gauge_86,84900cce0dd22542f0c5d2ff407c9718328ff49d34c414a540e0ba0d9bfb8b42,yes,,0,60,psi,yes,0,
+pressure_gauge_87,137b65339337243e47b963300f59b703ecf2b0aaa990fde98e6271c9abce05d1,yes,,0,1.6,MPa,,0,digital reference display partly in frame
+pressure_gauge_88,fa7c67c6326f0fa373571e500f558367d63a3491a0c21a323a0db3836d8dd36a,no,out_of_scope,,,,,,center-zero differential scale
+pressure_gauge_89,3c8703d5c75a2e6a348f53c2945ca47a8fb2d688f46c29874d6403f81ccd9656,no,reading_suspect,,,,,,needle ends near 30 and near 165; MeasureBench gives 30; which end is the tip is unclear
+pressure_gauge_90,04c2efac815ad52e40fe2901550bac19d2c0a34c61784cd199a40c786fad8607,yes,,-760,0,mmHg,,1,
+pressure_gauge_91,c06a067cdc28de35fec115dfb225bda7f802e341241f04d01af06adcf57903a2,yes,,0,200,psi,,1,
+pressure_gauge_92,c1c695cbbecadc876f09f7918ccdf98c9b92eb81cb92a587cd38f21e47e6bf7d,no,range_illegible,,,,,,dial too small
+pressure_gauge_93,e002678ea5a55b73ac99d3b3f570afa5e78d8ff70e7d0d18cf7272c91f23349f,yes,,0,80,bar,,1,
+pressure_gauge_94,2d93296e4a2ad369b0be98c5f9202fde96b0ac82b87b08c91a8f6d668dd07c5b,yes,,0,160,psi,yes,0,
+pressure_gauge_95,3347731af78d29b9066f7c184481a231c6f4189be71e07d151149aa92e21da0c,yes,,0,70,psi,yes,0,
+pressure_gauge_96,cc128e2eafef0214343eaed1af0e4d68ea47193e74fa3ceacfb355a70b2240da,yes,,0,60,psi,yes,0,
+pressure_gauge_97,0c58ba93c37f0c15081af136e16b709b1aefeadd486c2769a3c42250965bbeef,no,range_illegible,,,,,,blurred dial
+pressure_gauge_98,c8923969cba39e99472b2350ef1e55679c5a03f8436105834e870fbc4a2f6bd5,yes,,0,4,bar,yes,1,
+pressure_gauge_99,759f8f4be52b5bba86fba527d5cfce480b5051e7fbfe39b8a804ebdfedd635b5,yes,,0,60,psi,yes,0,
+pressure_gauge_100,64384adabe52d51503811d0cba92971f598e22339ce79744a9a1de2ddc9dcdb2,no,range_illegible,,,,,,lower part of the dial cut off; start numbers hidden
+pressure_gauge_101,1ced0a5d17f8f5c5f2333786de1652d6bedd50e5de559d39d7d636825fb50b40,yes,,0,100,psi,yes,0,
+pressure_gauge_102,e314fd3c16599ba28d09eaf00548bcde630ed1ed5abba0b1e93cf74e455f993b,yes,,0,100,psi,yes,0,
+pressure_gauge_103,77be90f0a5777b5229eec67a7ab2dff9f33b8b371ae43dd3e70b3d958340b64f,yes,,0,60,psi,yes,0,
+pressure_gauge_104,877e5a0a198a44cf7e302608474b09c4cfefde1e4b6ca377ab80f3c13aa4525b,yes,,0,60,psi,yes,0,
+pressure_gauge_105,447def1a32a75ab8bf12deede8d093072d79b463b96ae90c51e100efed358f8a,yes,,0,16,kg/cm²,,0,paint splashes on the glass
+pressure_gauge_106,69db649b626a0546a9a599f930a34bf21a7d577d496c03758ba5652c027bc05f,yes,,0,60,psi,yes,0,
+pressure_gauge_107,f3979bf46b3bf449dd25e5fcc8b958bace3703c46046c3f4ca5592331ab59c09,yes,,0,10,bar,,0,
+pressure_gauge_108,6c9b5830081412d49f766c3e7e3501de44ddcc7d50ae563f3d83b88291bcad9c,yes,,-1000,0,mmH2O,,1,digital transmitter at the frame edge
+pressure_gauge_109,485e8638b8c2289fb31ac1a173fdefc8145aaa96248738ecfab76cf300a29d8e,no,range_illegible,,,,,,start of the scale cut off by the frame
+pressure_gauge_110,9e877f5e23ac05ae15bebe2dfd0406859091ceda260a3992cd473033d537e4c6,no,out_of_scope,,,,,,refrigerant gauge: compound scale plus temperature rings
+pressure_gauge_111,c7ea33e9fb84361841b9c79221a5010429cc24c08a3f3afcb8d6805e6fbe7677,yes,,0,100,psi,yes,0,
+pressure_gauge_112,a7c0b8e4dd89bdbcc8af5f96ee2792c9c598992210d4c14d0613177d1bede07d,yes,,0,160,psi,yes,1,
+pressure_gauge_113,df76ba7bf04e8f898587bacb28385424c5b763745e671035d6200905433dc17a,yes,,0,25,kgf/cm²,,0,last section 22-25
+pressure_gauge_114,bae896e20146940770bccda99fc7fb8a22d3bce5fc8b7b95926af27967c4847b,yes,,0,60,psi,,0,start marked ZERO
+pressure_gauge_115,9e55af4f5cf89aff3e40470bb327712c87dcdd23f7e9f59e92b0d2f427088ca6,yes,,0,140,psi,,0,
+pressure_gauge_116,118507e6e5c9644bd682bd22563e8e818cee8f127426a67292582b6b79eb17d2,yes,,0,25,bar,,1,
+pressure_gauge_117,2d16bc8500f3f9a5b00841eaec86d5cc6901b3eb74ce259d4f62e918793b910c,yes,,0,55,PSI,yes,0,
+sphygmomanometer_0,72806b1456655d632c10bd33486cb77227d3d55d77c8703848d91a8b64030237,yes,,0,300,mmHg,yes,0,"zero marked by a box, not a number"
+sphygmomanometer_2,0e58d801e302841bf8a440f6564b87985311317d2b30df4c22f3226d91d2fd9b,no,range_illegible,,,,,,dial too small and blurred
+sphygmomanometer_3,e2fc21823eb280fd0f02b79d38351319acdb85bdef1b740876b49d93a1a81834,yes,,0,300,mmHg,yes,0,"zero marked by a box, not a number"
+sphygmomanometer_4,3af7084842da7486f0a14c02ea1875f93eb5a0846511cace526e1e757f2410c1,yes,,0,300,mmHg,yes,0,"zero marked by a box, not a number"
+sphygmomanometer_5,1be11409d34256c7d01823ad6ff16aeb3d27c7311fe5016f0ac846ed3cbc54b7,yes,,0,300,mmHg,yes,0,"zero marked by a box, not a number"
+sphygmomanometer_7,e3534c4ace1070b87219bad31cc1dc8c3766c1ecaa6c61cb804c2576e595a7da,yes,,0,300,mmHg,yes,0,"zero marked by a box, not a number"
+sphygmomanometer_8,3a5e9f060e80bb2d126ce08c55086a24f65c3a32f1e0d410287b52c92aaaf0fc,no,range_illegible,,,,,,dial too small
+sphygmomanometer_9,980e70659efe70ae102dbf6313e1184d5494641ddba3a4d640b3f287e24bfac5,yes,,0,300,mmHg,yes,0,"zero marked by a box, not a number"
+sphygmomanometer_11,160def0c3118fd396c4dacd9bcb1470d49e8043c10e5626fbe6189d7b3773887,yes,,0,300,mmHg,yes,0,"zero marked by a box, not a number; dial seen rotated"
+sphygmomanometer_13,5b35a23ff4dd3043fc9041b2ff5b2097cf7723810ab8a97fa0bf074ee003d627,no,range_illegible,,,,,,dial too small
+sphygmomanometer_14,ddf0cd05808c6f3afc742369232336152f2a64d9b612101f8389807e052d69cb,yes,,0,300,mmHg,yes,0,"zero marked by a box, not a number"
+sphygmomanometer_15,73fb6be6883ec637f3fdbdb4f340a13d6411ee2ab407436c31bfa8249aeb91ba,yes,,0,300,mmHg,yes,0,"zero marked by a box, not a number"
+sphygmomanometer_16,3f1d971b751702dd9472e59c03e841c5f2b3551d9ec3bd23f82abbaa6aacaa8d,yes,,0,300,mmHg,yes,0,"zero marked by a box, not a number"
+sphygmomanometer_17,3fe5775b488f194dad1552fc82a669838c811f79bd068bd83a87d649d0a6abb1,yes,,0,300,mmHg,yes,0,"zero marked by a box, not a number"
+sphygmomanometer_19,7fae95546bc8ccfba0976ecbc1ed06d4a228ca8abd5066aa4e775e931d94df85,yes,,0,300,mmHg,yes,0,"zero marked by a box, not a number; small dial"
+sphygmomanometer_24,903f404e53293202500b8ea9db4ae2c94340916c5ca06385ce2c127f80943950,yes,,0,300,mmHg,yes,0,"zero marked by a box, not a number"
+sphygmomanometer_25,92c1ab278fbf6ec08b98b951b08763b2168ba652888162c75bc4b1032c6735f5,yes,,0,300,mmHg,,0,
+sphygmomanometer_26,dc0ba87c09ff570a7fc82a21a62e245049734d131ea515bf5a2c17be2ceee4e4,no,range_illegible,,,,,,dial seen at a steep angle; end numbers hidden
+sphygmomanometer_27,284c6734cda3f28b04268317e9b5c81d3d02ad5240dcdcd7ca93d2a7a3a88260,yes,,0,300,mmHg,yes,0,"zero marked by a box, not a number"
+sphygmomanometer_28,c78544824aa7a1daf8d18d095d5515cba712045fd71b698f53b1bf3ff348b7ce,yes,,0,300,mmHg,yes,0,"zero marked by a box, not a number"
+sphygmomanometer_29,dc0082baea819e7369352f0f298d0e340a29c345b4010234e0f9a355d7965584,yes,,0,300,mmHg,yes,0,"zero marked by a box, not a number"

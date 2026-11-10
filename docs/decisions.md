@@ -186,3 +186,14 @@ The full fix is projective rectification: given the ellipse and the true center,
 - Resampling whole gauges keeps every photo and still gives honest intervals. Sample sizes are reported in images and in gauges.
 
 **Seen so far:** 6/7, 33/34, 93/94/95 and 183/184 among the eligible images of the first 200 candidates.
+
+## D14 — MeasureBench dial gauges as real dev data (2026-11-10)
+
+**Decision:** the 139 dial pressure and blood pressure gauges of MeasureBench's real-world split are the first real dev set. The AI assistant labels eligibility and the scale (`min`, `max`, `unit`) with the test-set guideline; the author checks a sample. Readings are MeasureBench's intervals.
+
+**Why:**
+- D11 keeps readings with the author because the test set must stay unbiased. Dev data only steers tuning; a small label error shifts a setting slightly and is caught by the next dev run, never reported as a result.
+- MeasureBench gives readings but no scale range, and every design needs the range as input (D8). Labeling the range is the missing step.
+- The same guideline keeps dev and test comparable: a design tuned on gauges the test set would exclude would be tuned for the wrong task.
+
+**Overlap with the test set:** checked by a 256-bit difference hash (`evaluation/dedup.py`). A 64-bit hash flagged two different dials as copies, because round white dials look alike at 9x8 pixels; at 256 bits copies differ by 0-1 bits and the closest different dials by 68. No copies were found. Two other photos of a test-set gauge were dropped.
