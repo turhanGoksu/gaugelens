@@ -135,7 +135,7 @@ The full fix is projective rectification: given the ellipse and the true center,
 | Role | Source | License |
 |---|---|---|
 | Test | Wikimedia Commons, categories Pressure gauges, Manometers, Vacuum gauges, Gauges | CC0, public domain, CC BY, CC BY-SA (per file) |
-| Real dev | Aalborg pressure gauge data (Kaggle); MeasureBench dial images | CC BY-SA 4.0 |
+| Real dev | Aalborg pressure gauge data (Kaggle); MeasureBench dial images | Aalborg CC BY 4.0 (Kaggle's listing; first recorded here as CC BY-SA 4.0 by mistake); MeasureBench CC BY-SA 4.0 |
 | Training (Design A) | Roboflow Universe datasets with keypoint labels | CC BY 4.0, verified per dataset before use |
 
 **Contamination:** VLMs were trained on web images and may have seen these photos.
@@ -197,3 +197,15 @@ The full fix is projective rectification: given the ellipse and the true center,
 - The same guideline keeps dev and test comparable: a design tuned on gauges the test set would exclude would be tuned for the wrong task.
 
 **Overlap with the test set:** checked by a 256-bit difference hash (`evaluation/dedup.py`). A 64-bit hash flagged two different dials as copies, because round white dials look alike at 9x8 pixels; at 256 bits copies differ by 0-1 bits and the closest different dials by 68. No copies were found. Two other photos of a test-set gauge were dropped.
+
+## D15 — Aalborg test videos as real dev data, read by the assistant (2026-11-11)
+
+**Decision:** the seven test videos of the Aalborg data (`man1` … `man7`, cropped to the dial) are the second real dev set. The data holds no readings: its numbers are the paper's own needle angles. The AI assistant picks 32 frames and labels them in full with the test-set guideline, reading included; the author checks a sample. Every frame of the four videos whose needle does not move also serves a label-free stability check.
+
+**Why:**
+- D14 took readings from MeasureBench; here there are none to take. The paper's angles cannot stand in: a design would be scored against another reader, that reader's errors included.
+- The assistant is not one of the evaluated designs (Design C uses Qwen and Gemini), so its readings give none of them an answer. The risk is plain label error, which the author's check and dev-only use (D14) contain.
+- Seven videos are seven gauges, not 20,000 samples: frames of one video are near-copies (D13). Frames are picked for spread: in the three videos where the pressure changes, the steady part and the fall at the end, skipping frames with a smeared needle where a sharp one is near; in the four where it does not, the first and the last frame.
+- In a video whose needle does not move, readings that differ between frames are error, whatever the true value. The check cannot see a reader that is off by the same amount in every frame; the labeled frames cover that.
+
+**Overlap with the test set:** no frame is within 25 bits of a test candidate (closest: 71). The gauges sit in sewer pump stations in Aalborg and were filmed by the paper's authors.

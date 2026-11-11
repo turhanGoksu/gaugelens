@@ -36,7 +36,7 @@ _Last checked: 2026-10-04. Licenses change — re-verify every entry before each
 
 | Dataset | Content | License | Use |
 |---|---|---|---|
-| [Pressure Gauge Reader Data](https://www.kaggle.com/datasets/juliusgrassme/pressure-gauge-reader-data) (Aalborg sewer pump stations, 2018) | Real, video-derived, ~6.4 GB | CC BY-SA 4.0 | Dev-set candidate. ShareAlike: redistributed derivatives must stay CC BY-SA. |
+| [Pressure Gauge Reader Data](https://www.kaggle.com/datasets/juliusgrassme/pressure-gauge-reader-data) (Aalborg sewer pump stations, 2018) | Real, video-derived, ~6.4 GB | CC BY 4.0 | Dev-set candidate. Attribution required; the paper's code (Bitbucket) is MIT. |
 | [MeasureBench](https://huggingface.co/datasets/FlagEval/MeasureBench) | Real + synthetic, many instrument types | CC BY-SA 4.0 | Dev / sanity check (dial subset). |
 | [Synthetic Data for Precision Gauge Reading](https://www.kaggle.com/datasets/endava/synthetic-data-for-precision-gauge-reading) (Endava) | 501 synthetic images | CC BY-NC-SA 4.0 | **Excluded** (non-commercial). |
 | Roboflow Universe gauge datasets | Mostly boxes/keypoints, no values | Per dataset | Check each one individually. |

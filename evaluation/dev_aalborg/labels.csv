@@ -1,0 +1,33 @@
+id,gauge,frame,eligible,exclusion_reason,min,max,unit,inferred_end,uneven_scale,status,value,sure,notes
+man1_f00000,man1,0,yes,,0,6,bar,,,value,0.86,yes,
+man1_f05135,man1,5135,yes,,0,6,bar,,,value,0.84,yes,
+man1_f09243,man1,9243,yes,,0,6,bar,,,value,0.80,yes,
+man1_f09355,man1,9355,yes,,0,6,bar,,,value,0.54,yes,
+man1_f09399,man1,9399,yes,,0,6,bar,,,value,0.10,yes,
+man1_f09444,man1,9444,yes,,0,6,bar,,,below_range,,yes,needle swings past zero into the dead zone while the pressure drops
+man1_f09578,man1,9578,yes,,0,6,bar,,,below_range,,yes,"needle points straight down, far below zero"
+man1_f11810,man1,11810,yes,,0,6,bar,,,value,0,yes,needle on the zero tick
+man2_f00000,man2,0,yes,,-1,3,bar,,,value,0.70,no,needle blurred by vibration
+man2_f00965,man2,965,yes,,-1,3,bar,,,value,0.70,yes,
+man2_f01968,man2,1968,yes,,-1,3,bar,,,value,0.30,yes,
+man2_f02005,man2,2005,yes,,-1,3,bar,,,value,0.12,yes,
+man2_f02043,man2,2043,yes,,-1,3,bar,,,value,0.04,yes,
+man2_f02081,man2,2081,yes,,-1,3,bar,,,value,-0.20,yes,
+man2_f02131,man2,2131,yes,,-1,3,bar,,,value,-0.36,yes,
+man2_f02219,man2,2219,yes,,-1,3,bar,,,value,-0.44,yes,
+man3_f00000,man3,0,yes,,0,2.5,bar,,,value,0.36,no,needle blurred by vibration
+man3_f00939,man3,939,yes,,0,2.5,bar,,,value,0.28,no,needle blurred by vibration
+man3_f01729,man3,1729,yes,,0,2.5,bar,,,value,0.30,yes,
+man3_f01756,man3,1756,yes,,0,2.5,bar,,,value,0.25,yes,
+man3_f01763,man3,1763,yes,,0,2.5,bar,,,value,0.15,yes,
+man3_f01766,man3,1766,yes,,0,2.5,bar,,,value,0.07,yes,
+man3_f01773,man3,1773,yes,,0,2.5,bar,,,value,0.02,no,needle crosses the + mark at zero and is slightly doubled by motion
+man3_f01800,man3,1800,yes,,0,2.5,bar,,,below_range,,yes,needle about one division below the zero tick
+man4_f00000,man4,0,yes,,-1,1.5,bar,,,value,0.08,yes,"printed 0,5 left of zero is -0.5"
+man4_f01110,man4,1110,yes,,-1,1.5,bar,,,value,0.09,yes,same needle position as f00000; the 0.01 gap is reading noise
+man5_f00000,man5,0,yes,,-1,1.5,bar,,,value,0.12,yes,"hand-held, tilted view; a cable crosses the face near 1.0"
+man5_f00450,man5,450,yes,,-1,1.5,bar,,,value,0.12,yes,"hand-held, tilted view; a cable crosses the face near 1.0"
+man6_f00000,man6,0,yes,,-1,3,bar,,,above_range,,yes,"glycerine-filled, fill line across the face; needle past the 3 tick by about five needle widths"
+man6_f01050,man6,1050,yes,,-1,3,bar,,,above_range,,yes,"glycerine-filled, fill line across the face; needle past the 3 tick by about five needle widths"
+man7_f00000,man7,0,yes,,0,6,bar,,,below_range,,no,"needle about half a division below the zero tick, offset by about twice the needle width"
+man7_f00572,man7,572,yes,,0,6,bar,,,below_range,,no,"needle about half a division below the zero tick, offset by about twice the needle width"
