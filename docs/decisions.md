@@ -128,6 +128,22 @@ A0 finds the ends from the ticks:
 
 The full fix is projective rectification: given the ellipse and the true center, the vanishing line is the polar of the center with respect to the ellipse. It needs the center as an input. Design A predicts the center as a keypoint, so this rectification is built as shared geometry when Design A is built.
 
+**Real dev results (2026-11-13, A0 unchanged):**
+
+| Dev set | In-range needles | Within 2% FS | `ok` but >2% off | Abstained | Said off-scale |
+|---|---|---|---|---|---|
+| MeasureBench, 97 photos | 97 | 3.1% | 12.4% | 68.0% | 15.5% |
+| Aalborg, 32 frames of 7 gauges | 25 | 12.0% | 4.0% | 0.0% | 80.0% |
+
+- **Scale ends are the main failure.** A0 puts the scale ends at the widest gap in the tick ring. On real dials, glare, a shiny bezel or a cable across the face opens a wider gap, and A0 puts an end there. A needle in the right place then reads as off the scale. In the four Aalborg frames drawn for inspection, A0 found the dial and the needle every time.
+- **Needles:** on 51 of the 97 MeasureBench photos, A0 stops at "two needle-like lines": counterweights, shadows and printed lines look like a second needle. These are explicit failures, not wrong numbers.
+- **Stability** (every frame of the four Aalborg videos whose needle does not move):
+  - On man5, 90% of the 451 frames read within 0.3% FS of each other.
+  - On man4, A0 switches between two choices of scale end, so the readings spread over 10.9% FS while the needle stands still.
+  - On man7, the needle sits below zero, but A0 reports `above_range` in 559 of 573 frames because it has the two ends swapped.
+
+The scale ends, not the needle, decide most real errors. This supports predicting the min and max marks as keypoints in Design A, next to the center.
+
 ## D10 — Real images: sources and roles (2026-10-09)
 
 **Decision:** no own photos. Every real image comes from a public source with a clear license, and each source has exactly one role.

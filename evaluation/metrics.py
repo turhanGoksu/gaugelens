@@ -42,12 +42,19 @@ class Outcome:
 
 
 def score(label: dict[str, Any], status: Status, value: float | None) -> Outcome:
+    """Compare one reading with its label.
+
+    A label may give an ``interval`` of accepted values instead of a single
+    ``value`` (MeasureBench does); the error is then the distance to the
+    nearer end, and zero inside it.
+    """
     expected = expected_position(label["fraction"])
     error = None
     if expected == "in_range" and status in ANSWERED and value is not None:
-        span = label["max_value"] - label["min_value"]
-        truth = min(max(label["value"], label["min_value"]), label["max_value"])
-        error = abs(value - truth) / span
+        lo_mark, hi_mark = label["min_value"], label["max_value"]
+        lo, hi = label.get("interval") or (label["value"], label["value"])
+        lo, hi = (min(max(v, lo_mark), hi_mark) for v in (lo, hi))
+        error = max(lo - value, value - hi, 0.0) / (hi_mark - lo_mark)
     return Outcome(expected, status, error)
 
 

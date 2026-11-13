@@ -35,6 +35,13 @@ def test_needle_within_the_edge_margin_is_scored_against_the_end_mark() -> None:
     assert score(label(10.05), "ok", 10.0).error == pytest.approx(0.0)
 
 
+def test_an_interval_label_counts_only_the_distance_outside_it() -> None:
+    lab = label(5.0) | {"interval": (4.8, 5.2)}
+    assert score(lab, "ok", 5.1).error == pytest.approx(0.0)
+    assert score(lab, "ok", 5.5).error == pytest.approx(0.03)
+    assert score(lab, "ok", 4.5).error == pytest.approx(0.03)
+
+
 def test_abstentions_have_no_error() -> None:
     assert score(label(5.0), "unreadable", None).error is None
 

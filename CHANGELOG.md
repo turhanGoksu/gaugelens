@@ -55,3 +55,18 @@ A released version is never changed: fixes ship as a new version.
   test labels.
 - Prior-art and license survey (`docs/prior-art-and-licenses.md`) and the
   design decision log (`docs/decisions.md`).
+- Test set v1 (`evaluation/test_set_v1`): 487 Wikimedia Commons candidates
+  labeled by the author, 149 eligible, with a re-labeling agreement check and
+  a card.
+- Real dev sets, each with a downloader and a card:
+  - MeasureBench dial gauges (`evaluation/dev_measurebench`): 97 eligible
+    photos (D14).
+  - Aalborg pump station videos (`evaluation/dev_aalborg`): 32 labeled
+    frames of seven gauges (D15).
+  - `evaluation.dedup` checks both against the test set by perceptual hash.
+- The dev runner reads the real sets: `python -m evaluation.run_dev
+  measurebench`, `aalborg` and `aalborg-static`. It adds:
+  - scoring against an interval of accepted readings;
+  - the share of in-range needles reported as off the scale;
+  - a stability check over every frame of the videos whose needle does not
+    move.
