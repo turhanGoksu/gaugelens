@@ -225,3 +225,24 @@ The scale ends, not the needle, decide most real errors. This supports predictin
 - In a video whose needle does not move, readings that differ between frames are error, whatever the true value. The check cannot see a reader that is off by the same amount in every frame; the labeled frames cover that.
 
 **Overlap with the test set:** no frame is within 25 bits of a test candidate (closest: 71). The gauges sit in sewer pump stations in Aalborg and were filmed by the paper's authors.
+
+## D16 — Real training data for Design A: two Roboflow datasets, strictly filtered (2026-11-16)
+
+**Decision:** Design A's real training images are 563 images from two Roboflow Universe datasets, project-kaqwa's keypoints (version 1) and computer-vision-ygqpn's gauge reader (version 11). Both are CC BY 4.0 and unaugmented. Two kinds of image are left out: those whose license the uploader cannot grant, and those that show a dev-set gauge. `evaluation/train_roboflow/manifest.csv` lists every image with its decision.
+
+**Why:**
+- They label the four points Design A needs: needle pivot, needle tip, min mark and max mark. On real photos, A0 fails mostly at the scale ends (D9).
+- Their image counts overstate their variety: of 1,235 images, 563 are kept, and these fall into 109 scenes. Synthetic data stays the main source; these images add real photographic conditions.
+- Only unaugmented versions are used, for two reasons. Some exported augmentations mirror the image, which turns a clockwise scale counterclockwise (guideline rule 5). And copies of one photo would leak across a train/validation split.
+
+**Left out:**
+- 241 web catalog photos and screenshots. The uploader's CC BY 4.0 cannot cover them, and D10 asks for a clear license.
+- 114 frames of watermarked stock footage.
+- 317 images of dev-set gauges:
+  - frames of the Aalborg test video man3;
+  - phone photos of Aalborg's man1, man2, man4/man5 and man6 at their pump stations;
+  - two videos of the TS gauge in MeasureBench's `pressure_gauge_0`.
+  The evaluation source keeps these gauges, as the test set does with its own duplicates (D10).
+- The ITU dial-meter dataset as a whole: it is two videos of that same TS gauge.
+
+**Not pursued:** gauge-analog (9,139 images, MIT). It has no downloadable version, and it most likely gathers the same sources.

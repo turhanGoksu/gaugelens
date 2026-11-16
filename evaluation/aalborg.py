@@ -24,7 +24,6 @@ import fnmatch
 import hashlib
 import io
 import json
-import os
 import urllib.parse
 import urllib.request
 import zipfile
@@ -36,9 +35,11 @@ from typing import Any
 import cv2
 import numpy as np
 
+from evaluation import env
+from evaluation.env import ENV_FILE
+
 API = "https://www.kaggle.com/api/v1"
 DATASET = "juliusgrassme/pressure-gauge-reader-data"
-ENV_FILE = Path(__file__).resolve().parents[1] / ".env"
 LABELS_DIR = Path(__file__).resolve().parent / "dev_aalborg"
 # The paper's seven test gauges, cropped to the dial and scaled to 512x512.
 VIDEOS = "Data/2 Test videos/edited videos"
@@ -47,14 +48,7 @@ Fetch = Callable[[str], bytes]
 
 
 def credentials(env_file: Path = ENV_FILE) -> tuple[str, str]:
-    values = {k: os.environ.get(k, "") for k in ("KAGGLE_USERNAME", "KAGGLE_KEY")}
-    if not all(values.values()) and env_file.exists():
-        for line in env_file.read_text().splitlines():
-            key, sep, value = line.partition("=")
-            if sep and key.strip() in values and not values[key.strip()]:
-                values[key.strip()] = value.strip().strip("'\"")
-    if not all(values.values()):
-        raise SystemExit("Set KAGGLE_USERNAME and KAGGLE_KEY (see .env.example).")
+    values = env.read(("KAGGLE_USERNAME", "KAGGLE_KEY"), env_file)
     return values["KAGGLE_USERNAME"], values["KAGGLE_KEY"]
 
 

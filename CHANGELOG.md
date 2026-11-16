@@ -70,3 +70,6 @@ A released version is never changed: fixes ship as a new version.
   - the share of in-range needles reported as off the scale;
   - a stability check over every frame of the videos whose needle does not
     move.
+- Real training data for Design A (`evaluation/train_roboflow`): 563 images
+  from two Roboflow Universe datasets, kept by the rules of D16. The
+  `evaluation.roboflow` module lists, downloads and selects them.
