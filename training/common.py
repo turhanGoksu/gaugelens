@@ -206,3 +206,33 @@ def detections_max_diff(got: dict[str, Any], want: dict[str, Any]) -> float:
         for i, j in pairs:
             worst = max(worst, float(np.abs(a[i] - b[j]).max()))
     return worst
+
+
+def detection_check(got: dict[str, Any], want: dict[str, Any]) -> dict[str, Any]:
+    """How far ONNX Runtime's detections are from PyTorch's.
+
+    ``top1_diff`` compares the best-scoring detection of each, which is what
+    a reader uses; ``all_diff`` pairs every detection, and can be large when
+    only the low-scoring tail differs.
+    """
+    n_want, n_got = len(want["scores"]), len(got["scores"])
+    if n_want == 0 or n_got == 0:
+        top1 = 0.0 if n_want == n_got else math.inf
+    else:
+        i, j = int(np.argmax(want["scores"])), int(np.argmax(got["scores"]))
+        top1 = max(
+            float(
+                np.abs(np.asarray(want[k][i], np.float64) - np.asarray(got[k][j])).max()
+            )
+            for k in ("boxes", "scores", "keypoints")
+        )
+
+    def best(scores) -> list[float]:
+        return [round(float(v), 4) for v in np.sort(np.asarray(scores))[::-1][:3]]
+
+    return {
+        "detections": [n_want, n_got],
+        "top_scores": [best(want["scores"]), best(got["scores"])],
+        "top1_diff": top1,
+        "all_diff": detections_max_diff(got, want),
+    }

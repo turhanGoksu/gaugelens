@@ -170,3 +170,18 @@ def test_detections_compare_in_any_order() -> None:
     assert common.detections_max_diff(moved, want) == 3.0
     fewer = {k: v[:1] for k, v in want.items()}
     assert common.detections_max_diff(fewer, want) == math.inf
+
+
+def test_detection_check_compares_the_best_detection() -> None:
+    want = {
+        "boxes": np.array([[0, 0, 10, 10], [50, 50, 60, 60]], float),
+        "scores": np.array([0.9, 0.2]),
+        "keypoints": np.array([[[1, 1, 1]] * 4, [[55, 55, 1]] * 4], float),
+    }
+    tail_moved = {k: v.copy() for k, v in want.items()}
+    tail_moved["boxes"][1] += 100.0  # only the low-scoring detection differs
+    check = common.detection_check(tail_moved, want)
+    assert check["top1_diff"] == 0.0 and check["all_diff"] == 100.0
+    assert check["detections"] == [2, 2] and check["top_scores"][0] == [0.9, 0.2]
+    empty = {k: v[:0] for k, v in want.items()}
+    assert common.detection_check(empty, want)["top1_diff"] == math.inf

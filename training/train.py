@@ -24,6 +24,7 @@ from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
+import cv2
 import numpy as np
 import torch
 
@@ -187,6 +188,12 @@ def export(way: str, model, path: Path, sample: dict[str, Any]) -> dict[str, Any
     # the ONNX file matches the module as it was before the export.
     with torch.no_grad():
         expected = module(*args)
+        if way == "way3":
+            # A second size: the file must not have kept the first one.
+            h, w = image.shape[:2]
+            other = cv2.resize(image, (w, int(h * 0.75)))
+            x2 = torch.from_numpy(preprocess.kprcnn_input(other)[0])
+            expected2 = module([x2])
     torch.onnx.export(
         module,
         args,
@@ -200,13 +207,19 @@ def export(way: str, model, path: Path, sample: dict[str, Any]) -> dict[str, Any
     session = ort.InferenceSession(str(path), providers=["CPUExecutionProvider"])
     got = session.run(None, {inputs[0]: x.numpy()})
     if way == "way3":
-        want = {k: expected[0][k].numpy() for k in names}
-        diff = common.detections_max_diff(dict(zip(names, got, strict=True)), want)
+        checks = []
+        for inp, ref in ((x, expected), (x2, expected2)):
+            out = session.run(None, {"image": inp.numpy()})
+            want = {k: ref[0][k].numpy() for k in names}
+            checks.append(
+                {"size": list(inp.shape[1:])}
+                | common.detection_check(dict(zip(names, out, strict=True)), want)
+            )
         return {
             "file": path.name,
             "opset": opset,
-            "max_abs_diff": diff,
-            "detections": len(want["boxes"]),
+            "max_abs_diff": max(c["top1_diff"] for c in checks),
+            "checks": checks,
         }
     expected = [expected] if way == "way2" else list(expected)
     diffs = [max_diff(g, e) for g, e in zip(got, expected, strict=True)]

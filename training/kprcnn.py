@@ -22,6 +22,7 @@ from training.torchutil import worker_init
 # Torchvision ignores a point outside its box; marks on the rim can sit just
 # outside a tight dial box, so the training boxes are widened by this share.
 BOX_GROW = 0.1
+DETECTIONS = 10
 
 
 def build_model(pretrained: bool = True):
@@ -35,6 +36,9 @@ def build_model(pretrained: bool = True):
     model = keypointrcnn_resnet50_fpn(
         weights=KeypointRCNN_ResNet50_FPN_Weights.COCO_V1 if pretrained else None,
         weights_backbone=None,
+        # The reader takes the best dial; the point head runs once per kept
+        # detection, so the default of 100 only costs time.
+        box_detections_per_img=DETECTIONS,
     )
     model.roi_heads.box_predictor = FastRCNNPredictor(1024, 2)
     model.roi_heads.keypoint_predictor = KeypointRCNNPredictor(512, len(POINTS))
