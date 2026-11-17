@@ -172,3 +172,37 @@ def fit(
         "stopped": stopped,
         "history": history,
     }
+
+
+def detections_max_diff(got: dict[str, Any], want: dict[str, Any]) -> float:
+    """Largest difference between two lists of detections, in any order.
+
+    Keypoint R-CNN lists its detections by score. When scores nearly tie,
+    ONNX Runtime and PyTorch may order them differently, and comparing them
+    position by position shows differences of hundreds of pixels that are
+    not there. Each detection is paired with the nearest box of the other
+    list instead. Lists of different lengths give infinity.
+    """
+    want_boxes = np.asarray(want["boxes"], np.float64)
+    got_boxes = np.asarray(got["boxes"], np.float64)
+    if len(want_boxes) != len(got_boxes):
+        return math.inf
+    if len(want_boxes) == 0:
+        return 0.0
+    cost = np.abs(want_boxes[:, None, :] - got_boxes[None, :, :]).sum(-1)
+    pairs: list[tuple[int, int]] = []
+    used_want: set[int] = set()
+    used_got: set[int] = set()
+    for flat in np.argsort(cost, axis=None):
+        i, j = (int(v) for v in np.unravel_index(flat, cost.shape))
+        if i not in used_want and j not in used_got:
+            pairs.append((i, j))
+            used_want.add(i)
+            used_got.add(j)
+    worst = 0.0
+    for key in want:
+        a = np.asarray(want[key], np.float64)
+        b = np.asarray(got[key], np.float64)
+        for i, j in pairs:
+            worst = max(worst, float(np.abs(a[i] - b[j]).max()))
+    return worst

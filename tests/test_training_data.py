@@ -106,5 +106,13 @@ def test_split_keeps_each_group_on_one_side() -> None:
     samples = [{"group": f"g{i % 50}"} for i in range(500)]
     train, val = data.split(samples, 0.2)
     assert {s["group"] for s in train}.isdisjoint({s["group"] for s in val})
-    assert 0.05 < len(val) / len(samples) < 0.4
+    assert 0.15 <= len(val) / len(samples) <= 0.2
     assert data.split(samples, 0.2) == (train, val)
+
+
+def test_split_counts_images_and_keeps_a_huge_group_in_training() -> None:
+    # One video of 183 frames next to 60 single photos.
+    samples = [{"group": "video"}] * 183 + [{"group": f"photo{i}"} for i in range(60)]
+    train, val = data.split(samples, 0.15)
+    assert all(s["group"] != "video" for s in val)
+    assert 0.12 <= len(val) / len(samples) <= 0.15

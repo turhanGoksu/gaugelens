@@ -171,15 +171,25 @@ def roboflow_samples(
     return samples, dropped
 
 
-def in_validation(group: str, fraction: float) -> bool:
-    """A fixed, hash-based choice: the same group always lands on one side."""
-    digest = hashlib.sha256(group.encode()).digest()
-    return int.from_bytes(digest[:8], "big") / 2**64 < fraction
-
-
 def split(samples: list[Sample], fraction: float) -> tuple[list[Sample], list[Sample]]:
-    train = [s for s in samples if not in_validation(s["group"], fraction)]
-    val = [s for s in samples if in_validation(s["group"], fraction)]
+    """Whole groups go to validation until they hold about ``fraction`` of the
+    images; the same samples always split the same way.
+
+    Groups are taken in a fixed order (the hash of their name) and skipped
+    when they would push the share past ``fraction``. Scenes differ a lot in
+    size: one video can be a third of the real images, and counting groups
+    instead of images once sent 37% of them to validation. A group that large
+    stays in training.
+    """
+    sizes = Counter(s["group"] for s in samples)
+    chosen: set[str] = set()
+    taken = 0
+    for group in sorted(sizes, key=lambda g: hashlib.sha256(g.encode()).digest()):
+        if taken + sizes[group] <= fraction * len(samples):
+            chosen.add(group)
+            taken += sizes[group]
+    train = [s for s in samples if s["group"] not in chosen]
+    val = [s for s in samples if s["group"] in chosen]
     return train, val
 
 

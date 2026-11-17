@@ -155,3 +155,18 @@ def test_reader_turns_points_into_statuses(monkeypatch) -> None:
     monkeypatch.setattr(readers, "find", lambda way, image, models: None)
     r = readers.read("way2", np.zeros((1, 1, 3)), 0.0, 10.0, Path("."))
     assert (r["status"], r["notes"]) == ("unreadable", ["no dial found"])
+
+
+def test_detections_compare_in_any_order() -> None:
+    want = {
+        "boxes": np.array([[0, 0, 10, 10], [50, 50, 60, 60]], float),
+        "scores": np.array([0.51, 0.50]),
+        "keypoints": np.array([[[1, 1, 1]] * 4, [[55, 55, 1]] * 4], float),
+    }
+    swapped = {k: v[::-1] for k, v in want.items()}
+    assert common.detections_max_diff(swapped, want) == 0.0
+    moved = {k: v.copy() for k, v in swapped.items()}
+    moved["keypoints"][0, 0, 0] += 3.0
+    assert common.detections_max_diff(moved, want) == 3.0
+    fewer = {k: v[:1] for k, v in want.items()}
+    assert common.detections_max_diff(fewer, want) == math.inf

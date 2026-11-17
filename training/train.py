@@ -197,12 +197,18 @@ def export(way: str, model, path: Path, sample: dict[str, Any]) -> dict[str, Any
         dynamic_axes=dynamic,
         dynamo=False,
     )
-    if way == "way3":
-        expected = [expected[0][k] for k in names]
-    elif way == "way2":
-        expected = [expected]
     session = ort.InferenceSession(str(path), providers=["CPUExecutionProvider"])
     got = session.run(None, {inputs[0]: x.numpy()})
+    if way == "way3":
+        want = {k: expected[0][k].numpy() for k in names}
+        diff = common.detections_max_diff(dict(zip(names, got, strict=True)), want)
+        return {
+            "file": path.name,
+            "opset": opset,
+            "max_abs_diff": diff,
+            "detections": len(want["boxes"]),
+        }
+    expected = [expected] if way == "way2" else list(expected)
     diffs = [max_diff(g, e) for g, e in zip(got, expected, strict=True)]
     return {"file": path.name, "opset": opset, "max_abs_diff": max(diffs)}
 
