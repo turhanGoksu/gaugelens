@@ -73,3 +73,13 @@ A released version is never changed: fixes ship as a new version.
 - Real training data for Design A (`evaluation/train_roboflow`): 563 images
   from two Roboflow Universe datasets, kept by the rules of D16. The
   `evaluation.roboflow` module lists, downloads and selects them.
+- `gaugelens.points`: a reading from four points on a dial (needle pivot,
+  needle tip, min mark, max mark), shared by every way of finding them.
+- Design A training (`training/`, D17):
+  - one sample format for synthetic and Roboflow images, split by scene;
+  - trainers for the three ways: D-FINE with points as boxes, heatmaps on
+    dial crops, and Keypoint R-CNN;
+  - each run exports ONNX and checks it against PyTorch;
+  - a Kaggle notebook (`notebooks/design_a_kaggle.ipynb`);
+  - `python -m evaluation.run_dev ... --method way1|way2|way3` reads the
+    ONNX files on CPU.

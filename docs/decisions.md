@@ -246,3 +246,27 @@ The scale ends, not the needle, decide most real errors. This supports predictin
 - The ITU dial-meter dataset as a whole: it is two videos of that same TS gauge.
 
 **Not pursued:** gauge-analog (9,139 images, MIT). It has no downloadable version, and it most likely gathers the same sources.
+
+## D17 — Design A: three ways to find the points, compared on dev by rules fixed in advance (2026-11-17)
+
+**Decision:** Design A finds four points on each dial: the needle pivot, the needle tip, the min mark and the max mark. `gaugelens.points` turns them into a reading. Three ways of finding the points are trained on Kaggle and compared on the dev sets, and the best becomes Design A. The rules below are fixed before any of the three is trained.
+
+**The three ways:**
+1. **Points as boxes.** One D-FINE detector finds the dial and each point as a small box. A point is the centre of its box.
+2. **Detector, then crop.** The same detector's dial box is cut out and scaled to a fixed size. A heatmap model finds the four points in the crop.
+3. **Keypoint R-CNN** (torchvision). One model finds the dial and its four points together.
+
+**The same conditions for all three:**
+- **Data:** synthetic training images plus the Roboflow images of D16. The Roboflow images are split by scene, 15% to validation. Synthetic validation images come from their own seed range. The test set never leaves the author's machine.
+- **Training:** each model trains until its validation loss stops improving, with a cap of 3 hours on the same Kaggle GPU. The GPU time used is reported.
+  - A fixed short budget would favour the model that learns fastest, not the one that ends up best.
+  - Way 2 reuses way 1's detector for the dial box.
+- **Reading:** one reading per image, from its highest-scoring dial. The points go through `read_points` with the known range (D1) and the provisional 1% FS edge margin. No dial, or points that define no scale, give `unreadable`.
+
+**Decision rule:**
+1. The primary measure is the share of in-range needles within 2% FS on MeasureBench, which with 97 photos is the most varied dev set.
+2. A way wins outright if it leads each of the others by at least 5 percentage points. With 97 photos, one standard error of a share near one half is about 5 points.
+3. Otherwise the ways within 5 points of the best are compared on their `ok` readings more than 2% FS off (confidently wrong) on MeasureBench. If those also lie within 2 points of each other, the faster ONNX model on CPU wins.
+4. A way whose ONNX export does not run on CPU with ONNX Runtime cannot become the default (D3).
+
+The following are reported but do not decide: the 32 Aalborg frames, the stability set, synthetic validation, and the pixel error of each point.

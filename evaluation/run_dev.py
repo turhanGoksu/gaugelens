@@ -4,6 +4,10 @@
     python -m evaluation.run_dev measurebench --method a0 --workers 8
     python -m evaluation.run_dev aalborg --method a0
     python -m evaluation.run_dev aalborg-static --method a0 --workers 8
+    python -m evaluation.run_dev measurebench --method way1 --models models/design_a
+
+``way1`` ... ``way3`` are the ONNX files of D17's three ways, read on CPU by
+``training/readers.py`` from ``--models`` (default ``models/design_a``).
 
 A folder is a synthetic set with ``labels.jsonl``; a name is one of the real
 dev sets in ``evaluation/real_dev.py``. Predictions go to
@@ -15,10 +19,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import platform
 import time
 from collections import Counter
 from concurrent.futures import ProcessPoolExecutor
+from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -61,7 +67,28 @@ def _read_a0(batch: list[Label]) -> list[dict[str, Any]]:
     return predictions
 
 
-METHODS = {"a0": _read_a0}
+def _read_design_a(way: str, batch: list[Label]) -> list[dict[str, Any]]:
+    from training import readers
+
+    models = Path(os.environ.get("GAUGELENS_MODELS", "models/design_a"))
+    predictions = []
+    for label, image in zip(batch, _images(batch), strict=True):
+        start = time.perf_counter()
+        reading = readers.read(
+            way, image, label["min_value"], label["max_value"], models
+        )
+        predictions.append(
+            {"image": label["image"], "seconds": time.perf_counter() - start} | reading
+        )
+    return predictions
+
+
+METHODS = {
+    "a0": _read_a0,
+    "way1": partial(_read_design_a, "way1"),
+    "way2": partial(_read_design_a, "way2"),
+    "way3": partial(_read_design_a, "way3"),
+}
 
 
 def batches(labels: list[Label]) -> list[list[Label]]:
@@ -183,7 +210,10 @@ def main() -> None:
     parser.add_argument("--method", choices=sorted(METHODS), required=True)
     parser.add_argument("--limit", type=int, default=None)
     parser.add_argument("--workers", type=int, default=1)
+    parser.add_argument("--models", default=None, help="folder of the ONNX files")
     args = parser.parse_args()
+    if args.models:
+        os.environ["GAUGELENS_MODELS"] = args.models  # inherited by the workers
 
     if args.dataset in LOADERS:
         name, labels = args.dataset, LOADERS[args.dataset]()
