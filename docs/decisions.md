@@ -270,3 +270,39 @@ The scale ends, not the needle, decide most real errors. This supports predictin
 4. A way whose ONNX export does not run on CPU with ONNX Runtime cannot become the default (D3).
 
 The following are reported but do not decide: the 32 Aalborg frames, the stability set, synthetic validation, and the pixel error of each point.
+
+## D18 — Design A finds the points with way 2: detector, then heatmaps on the crop (2026-11-23)
+
+**Decision:** Design A is way 2 of D17. D-FINE finds the dial, a heatmap model finds the four points in a crop of it, and `gaugelens.points` turns them into a reading. By D17's rule 2 it wins outright: on MeasureBench it leads way 1 by 11.3 points and way 3 by 22.6, where 5 were needed. Its two ONNX files run on CPU (rule 4).
+
+**Primary measure:** MeasureBench, 97 photos, in-range needles within 2% FS.
+
+| | Within 2% FS | `ok` but >2% off | Abstained | Median error |
+|---|---|---|---|---|
+| A0 (D9) | 3.1% | 12.4% | 68.0% | 15.7% |
+| Way 1: points as boxes | 40.2% | 37.1% | 20.6% | 1.9% |
+| **Way 2: detector, then heatmaps** | **51.5%** | 44.3% | 1.0% | 1.5% |
+| Way 3: Keypoint R-CNN | 28.9% | 64.9% | 1.0% | 4.2% |
+
+**Reported, not deciding:**
+
+| | Way 1 | Way 2 | Way 3 |
+|---|---|---|---|
+| Aalborg, 25 in-range frames within 2% FS | 96.0% | 96.0% | 88.0% |
+| Aalborg, 7 off-scale frames with the right status | 57.1% | 85.7% | 71.4% |
+| Stability, man4 / man5: spread p5–p95 (max–min) | 0.2% (0.5%) / 0.7% (7.2%) | 0.4% (0.6%) / 0.7% (1.2%) | not run |
+| Stability, man6 above range / man7 below range: right status | 24% / 67% | 100% / 64% | not run |
+| Validation, real dials: median point error (share of radius), centre / tip / min / max | 1.3 / 2.5 / 1.3 / 1.0% | 0.8 / 1.2 / 1.6 / 1.1% | 1.5 / 1.9 / 1.6 / 1.6% |
+| CPU latency, one thread, Apple M3 | 320 ms | 398 ms | 4,068 ms |
+| Training on a Kaggle T4 | 180 min, cap reached | 153 min, stopped improving | 181 min, cap reached |
+
+- Way 3 was not run on the stability set: at about 13 s per frame with eight processes, its 3,186 frames would take more than an hour, and it had already lost on the primary measure.
+- Way 2's validation errors come from crops cut at the labeled box, so they are its upper bound. On the dev sets, its crops come from way 1's detector.
+- Ways 1 and 3 hit the 3-hour cap while still improving slightly. D17 set that cap, and the result stands.
+
+**Provenance:** code at commit `3f43f8b`, torch 2.11.0+cu130 on Kaggle. The detector starts from `ustc-community/dfine-small-coco` at Hugging Face commit `f79e65b5`. The ONNX files stay out of the repository (`models/design_a/`).
+
+**Open weaknesses:** these are the next work, tuned on dev only.
+- **Confidently wrong:** 44.3% of MeasureBench readings are `ok` but more than 2% FS off. Way 2 has no `low_confidence` yet. Its heatmap peaks and detector scores are the candidates for one.
+- **Weak subsets:** gauges with an inferred end reach 25.6%, blood pressure gauges 23.5%.
+- **Edge margin (D4):** man7's needle rests about 0.8% FS below zero. The guideline calls that `below_range`; the provisional 1% FS margin reads it as 0. This is the open edge-margin item, now with a reader to choose it on.
